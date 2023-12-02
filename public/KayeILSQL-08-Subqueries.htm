@@ -1,0 +1,4309 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>KayeILSQL-08-Subqueries</title>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="KayeILSQL-08-Subqueries">
+    <meta name="keywords" content="Kaye is Learning SQL, #kayeIsLearningSQL, 
+    Subqueries, #subqueries, Correlated Subqueries, #correlated
+ ">
+    <meta name="author" content="Dicle Ertan Ülger">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        h1 {
+            color: rgb(8, 51, 143);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            page-break-before: always;
+        }
+
+        h2 {
+            color: rgb(125, 186, 0);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            page-break-before: always;
+        }
+
+        h3 {
+            color: rgb(0, 184, 224);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        h4 {
+            color: rgb(222, 59, 33);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+        }
+
+
+        h5 {
+            color: rgb(0, 196, 181);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+        }
+
+        h6 {
+            color: rgb(144, 36, 143);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+        }
+
+        p {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .note-emoji-300 {
+            font-size: 300%;
+
+        }
+
+
+        .note-bold {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+        }
+
+
+        .note-bold-italic {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .note-bold-navy {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(8, 51, 143);
+        }
+
+        .note-bold-navy-italic {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(8, 51, 143);
+            font-style: italic;
+        }
+
+        .note-bold-navy-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(8, 51, 143);
+            font-size: larger;
+        }
+
+        .note-bold-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-bold-red {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+        }
+
+        .note-bold-red-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-bold-red-italic {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .note-10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            background-color: rgb(247, 181, 18);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-20 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+        }
+
+        .note-25 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(222, 59, 33);
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .note-white-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(256, 256, 256);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(247, 181, 18);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-40 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(0, 184, 224);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-55 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            padding: 30px;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-60 {
+            background-color: rgb(247, 181, 18);
+            color: rgb(8, 51, 143);
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            padding: 20px;
+        }
+
+        .note-75 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 25%);
+            color: rgb(222, 59, 33);
+            padding: 30px;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-80 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(247, 181, 18);
+            color: rgb(222, 59, 33);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+
+        .note-85 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(247, 181, 18);
+            color: rgb(222, 59, 33);
+            padding: 30px;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .note-jci-green {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(125, 186, 0);
+            padding: 30px;
+        }
+
+        .note-jci-green-3 {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: larger;
+            font-weight: bold;
+            background-color: rgb(125, 186, 0);
+            padding: 30px;
+        }
+
+
+        .note-90 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 25%);
+            padding: 30px;
+
+        }
+
+        .note-cyan-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 30%);
+            padding: 30px;
+        }
+
+        .note-95 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 10%);
+            padding: 30px;
+        }
+
+        .note-95-a15 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 15%);
+            padding: 30px;
+        }
+
+        .note-95-a20 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 20%);
+            padding: 30px;
+        }
+
+        .note-95-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 30%);
+            padding: 30px;
+        }
+
+        .note-95-a30-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 30%);
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .note-jci-cyan {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(0, 184, 224);
+            padding: 30px;
+        }
+
+        .note-jci-cyan-10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 10%);
+            padding: 30px;
+        }
+
+        .note-jci-cyan-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(0, 184, 224);
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .note-96 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 184, 224, 10%);
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .note-97 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 10%);
+            padding: 30px;
+
+        }
+
+        .note-97-a15 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 15%);
+            padding: 30px;
+
+        }
+
+        .note-97-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 30%);
+            padding: 30px;
+        }
+
+        .note-98 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(125, 186, 0, 10%);
+            padding: 30px;
+            font-size: larger;
+
+        }
+
+        .note-jcigreen-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(125, 186, 0);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-110 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(199, 15, 175);
+            font-weight: bold;
+        }
+
+        .note-115 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 25%);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+        .note-117 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 10%);
+            padding: 30px;
+        }
+
+        .note-117-a05 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 5%);
+            padding: 30px;
+        }
+
+
+        .note-117-a10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 10%);
+            padding: 30px;
+        }
+
+        .note-117-a15 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 15%);
+            padding: 30px;
+        }
+
+        .note-117-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 30%);
+            padding: 30px;
+        }
+
+        .note-117-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 50%);
+            padding: 30px;
+        }
+
+        .note-117-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(199, 15, 175, 70%);
+            padding: 30px;
+        }
+
+        .note-117-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(199, 15, 175);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-200 {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .note-210 {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+
+
+        .note-300 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(102, 99, 102);
+            color: rgb(245, 245, 245);
+            padding: 30px;
+            font-weight: bold;
+        }
+
+
+        .note-charcoal-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(102, 99, 102);
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-charcoal {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(102, 99, 102);
+            padding: 30px;
+        }
+
+        .note-charcoal-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 70%);
+            padding: 30px;
+        }
+
+        .note-charcoal-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 50%);
+            padding: 30px;
+        }
+
+        .note-charcoal-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 30%);
+            padding: 30px;
+        }
+
+        .note-charcoal-a30-large {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 30%);
+            padding: 30px;
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .note-charcoal-a30-largexx {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(102, 99, 102, 30%);
+            padding: 30px;
+            font-size: xx-large;
+            font-weight: bold;
+        }
+
+        .note-solaryellow-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(247, 181, 18, 30%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(196, 219, 13);
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-brightgreen {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(196, 219, 13);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 70%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 50%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 30%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 10%);
+            padding: 30px;
+        }
+
+        .note-brightgreen-a05 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(196, 219, 13, 5%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-larger {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181);
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-oceangreen {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a05 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 5%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a10 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 10%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a30 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 30%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a50 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 50%);
+            padding: 30px;
+        }
+
+        .note-oceangreen-a70 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgba(0, 196, 181, 70%);
+            padding: 30px;
+        }
+
+
+        .note-radient-red-larger {
+            background-color: rgb(168, 3, 79);
+            color: rgb(245, 245, 245);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: larger;
+            font-weight: bold;
+            padding: 30px;
+        }
+
+        .note-radient-red {
+            background-color: rgb(168, 3, 79);
+            color: rgb(245, 245, 245);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a70 {
+            background-color: rgba(168, 3, 79, 70%);
+            color: rgb(245, 245, 245);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a50 {
+            background-color: rgba(168, 3, 79, 50%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a30 {
+            background-color: rgba(168, 3, 79, 30%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a10 {
+            background-color: rgba(168, 3, 79, 10%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        .note-radient-red-a05 {
+            background-color: rgba(168, 3, 79, 5%);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 30px;
+        }
+
+        ul {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            line-height: 30px;
+        }
+
+        ol {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            line-height: 30px;
+        }
+
+        dl {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            line-height: 30px;
+        }
+
+        dt {
+            font-size: larger;
+        }
+
+        #t20 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+
+        }
+
+        table {
+            width: 100%;
+            text-align: left;
+            font-size: small;
+        }
+
+        table,
+        th,
+        td {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+        div {
+            overflow-x: auto;
+
+        }
+
+        figcaption {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        p.lh2 {
+            line-height: 2;
+        }
+
+        ul.lh3 {
+            line-height: 3;
+        }
+
+
+        #table_and table,
+        th,
+        td {
+            padding: 30px;
+            text-align: center;
+            border-collapse: collapse;
+            font-size: larger;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <h1>KayeILSQL-08-Subqueries</h1>
+    <p></p>
+    <!--    <img src="deu.png" style="max-width:100% ;" height="auto" alt="just me"> -->
+
+    <p></p>
+    <div class="note-55">
+        <p style="font-size: larger;">Contents</p>
+    </div>
+
+
+    <!-- -->
+    <div class="note-95">
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#based_on"> Based On </a>
+        </p>
+
+        <ul>
+            <li><a href="#based_on_experience">Based On &mdash; Experience</a> </li>
+            <li><a href="#based_on_data_model">Based On &mdash; European Parliament as Data Model</a> </li>
+            <li><a href="#based_on_references">Based On &mdash; Oracle Database as RDBMS</a> </li>
+        </ul>
+
+        <!-- -->
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#gen">Subqueries in General</a>
+        </p>
+        <ul>
+            <li><a href="#gen_1">Report Requirements</a></li>
+            <li><a href="#gen_2">Solution with Two Queries</a></li>
+            <li><a href="#gen_3">Solution with a Subquery</a></li>
+        </ul>
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#examine_subq">The Subquery Structure</a>
+        </p>
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#nota">The Notation We Will Use</a>
+        </p>
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#gen_5">Subquery Operators</a>
+        </p>
+
+
+        <ul>
+            <li><a href="#gen_single">Single-Row Operator</a></li>
+            <li><a href="#gen_multi">Multiple-Row Operator</a></li>
+        </ul>
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#sr">SINGLE-ROW Subqueries</a>
+        </p>
+        <ul>
+            <li><a href="#sr_ex1">SINGLE-ROW Subquery Example 1</a></li>
+            <li><a href="#sr_ex2">SINGLE-ROW Subquery Example 2</a></li>
+            <li><a href="#sr_ex3">SINGLE-ROW Subquery Example 3</a></li>
+            <li><a href="#sr_ex4">SINGLE-ROW Subquery Example 4</a></li>
+            <li><a href="#sr_ex5">SINGLE-ROW Subquery Example 5</a></li>
+            <li><a href="#sr_ex6">SINGLE-ROW Subquery Example 6</a></li>
+            <li><a href="#sr_ex7">SINGLE-ROW Subquery Example 7</a></li>
+
+        </ul>
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#mr">MULTIPLE-ROW Subqueries</a>
+        </p>
+        <ul>
+            <li><a href="#mr_ex1">MULTIPLE-ROW IN</a></li>
+            <li><a href="#mr_ex2">MULTIPLE-ROW ANY</a></li>
+            <li><a href="#mr_ex3">MULTIPLE-ROW ALL</a></li>
+        </ul>
+
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#nv">NULL Values in a Subquery</a>
+        </p>
+
+        <ul>
+            <li><a href="#nv_1">Report Requirements</a></li>
+            <li><a href="#nv_98">The Query for the Report Requirement</a></li>
+            <li><a href="#nv_2">Result Set of the Query</a></li>
+            <li><a href="#nv_3">The Outer Query</a></li>
+            <li><a href="#nv_4">The Inner Query</a></li>
+            <li><a href="#nv_99">The Result We Expect</a></li>
+            <li><a href="#nv_5">Some Questions on a Query Returning Rows</a></li>
+            <li><a href="#nv_6">Our Particular Case</a></li>
+            <li><a href="#nv_7">Let's Get This Right</a></li>
+        </ul>
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#ilv">FROM Clause Query / INLINE VIEW</a>
+        </p>
+
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#tn">TOP-N Query</a>
+        </p>
+        <ul>
+            <li><a href="#tn_1">TOP-N Using the ROWNUM Pseudocolumn</a></li>
+            <ul>
+                <li><a href="#tn_1_problem">Problem</a></li>
+                <li><a href="#tn_1_rownum">What is ROWNUM?</a></li>
+                <li><a href="#tn_1_s1">Step 1</a></li>
+                <li><a href="#tn_1_s2">Step 2</a></li>
+            </ul>
+            <li><a href="#tn_2">TOP-N Using the Analytic Function ROW_NUMBER</a></li>
+            <ul>
+                <li><a href="#tn_2_problem">Problem</a></li>
+                <li><a href="#tn_2_row_number">What is ROW_NUMBER?</a></li>
+                <li><a href="#tn_2_inner_q">The INNER QUERY with ROW_NUMBER</a></li>
+                <li><a href="#tn_2_partition_by">ROW_NUMBER() OVER (PARTITION BY .. ORDER BY ..)</a></li>
+                <li><a href="#tn_2_outer_query">The OUTER QUERY</a></li>
+            </ul>
+        </ul>
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#cor">CORRELATED Subqueries</a>
+        </p>
+        <ul>
+            <li><a href="#cor_1">What is a CORRELATED Subquery?</a></li>
+            <li><a href="#cor_ex_1">Example of a CORRELATED Subquery</a></li>
+
+            <li><a href="#cor_2">How Does a CORRELATED Subquery Work?</a></li>
+            <li><a href="#cor_3">EXISTS Operator in CORRELATED Subqueries</a></li>
+
+            <ul>
+                <li><a href="#cor_3_1">(EXISTS) INNER Query Returns
+                        AT LEAST ONE ROW</a></li>
+                <li><a href="#cor_3_2">(EXISTS) INNER Query Returns
+                        NO ROWS</a></li>
+                <li><a href="#cor_3_3">Example ON EXISTS </a></li>
+
+            </ul>
+
+            <li><a href="#cor_4">NOT EXISTS Operator in CORRELATED Subqueries</a></li>
+            <ul>
+                <li><a href="#cor_4_1">(NOT EXISTS) INNER Query Returns
+                        AT LEAST ONE ROW</a></li>
+                <li><a href="#cor_4_2">(NOT EXISTS) INNER Query Returns
+                        NO ROWS</a></li>
+                <li><a href="#cor_4_3">Example ON NOT EXISTS </a></li>
+
+            </ul>
+        </ul>
+        <!-- -->
+        <p style="font-size: larger; font-weight: bold;">
+            <a href="#references"> References </a>
+        </p>
+    </div>
+    <p></p>
+
+    <h2 id="based_on">Based On</h2>
+    <ul>
+        <li><a href="#based_on_experience">Based On &mdash; Experience</a> </li>
+        <li><a href="#based_on_data_model">Based On &mdash; European Parliament as Data Model</a> </li>
+        <li><a href="#based_on_references">Based On &mdash; Oracle Database as RDBMS</a> </li>
+    </ul>
+    <h3 id="based_on_experience">Based On &mdash; Experience</h3>
+    <div class="note-charcoal-a30-large">
+
+
+        <p>The contents of this work are based on;
+        </p>
+    </div>
+    <p>
+
+    </p>
+
+
+    <ul class="note-117">
+        <li>the SQL Courses I delivered to Oracle Customers in
+            Oracle Turkey, during 1995-2002,
+        </li>
+        <li>the SQL Courses I delivered to the students of
+            the evening programs
+            in Bahçeşehir University,
+            Istanbul, during 2007-2009,</li>
+        <li>the in-house SQL Courses I delivered to my colleagues
+            in Johnson Controls, Istanbul Technology Center,
+            during 2009-2012,</li>
+        <li>the in-house SQL Courses I delivered to my colleagues
+            in Toyzz Shop HQ, Şekerpınar Kocaeli, during 2014-2021,
+        </li>
+        <li>most of my career in IT where I used hands-on SQL as
+            a base of the development tools starting from 1987 &mdash;
+            30 years of lapse time approximately.</li>
+    </ul>
+
+
+
+    <h3 id="based_on_data_model">Based On &mdash; European Parliament as Data Model</h3>
+
+    <p> This text on SQL is based on the
+        <span class="note-bold-navy">EP-European Parliament </span>
+        as Data Model.
+    </p>
+
+
+
+
+
+
+    <span class="note-bold"> </span>
+    <span class="note-bold-navy"> </span>
+    <span class="note-bold-italic"> </span>
+    <span class="note-bold-navy-italic"> </span>
+
+    <p></p>
+    <p></p>
+    <p></p>
+
+    <div class="note-95">
+        <span class="note-bold"> </span>
+        <span class="note-bold-navy"> </span>
+        <span class="note-bold-italic"> </span>
+        <span class="note-bold-navy-italic"> </span>
+        <p>The
+            <span class="note-bold-navy">European Parliament (EP)</span>
+            is the parliamentary institution of the
+            <span class="note-bold">European Union (EU)</span>.
+        </p>
+        <p>
+            The European Parliament is elected by the citizens of the European Union to represent their interests.</p>
+        <p> Its origins go back to the 1950s and the founding Treaties.
+            Since 1979 its members have been directly elected by the citizens of the EU.</p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p>Elections are held every five years, and every EU citizen is entitled to vote, and to stand as a candidate,
+            wherever they live in the EU.
+            Parliament thus expresses the democratic will of the
+            European Union's nearly 500 million citizens and
+            it represents their interests in discussions with the other EU institutions. </p>
+
+    </div>
+
+    <p></p>
+
+    <p></p>
+
+    <div class="note-jci-green-3">
+        <p>Please Note:</p>
+        <p>
+        <ul style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: larger;
+            font-weight: bold;
+            ">
+            <li> The European Parliament model and data used in this SQL text,
+                are based on the elections which were held in June 2004.</li>
+            <li>The European Parliament of 2004 elections had 785 members from all 27 EU countries.</li>
+        </ul>
+        </p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-95">
+        <p>The sources for the data, which are all freely obtainable from the European Union website,
+            and from several leaflets of the EU institutions,
+            are listed in the
+            <a href="#references"> References</a>
+            section.
+        </p>
+
+        <span class="note-bold"> </span>
+        <span class="note-bold-navy"> </span>
+        <span class="note-bold-italic"> </span>
+        <span class="note-bold-navy-italic"> </span>
+        <p>These sources are used to create
+            <span class="note-bold-navy-italic">the fictitious Business Narrative</span>
+
+            of the
+            <span class="note-bold">"Data Modelling and Normalization"</span>
+            Chapter.
+        </p>
+        <p>We called this
+            <span class="note-bold-navy">Business Narrative</span>;
+            <span class="note-bold">"the Story of the European Union"</span>
+            which explains about the EU and EP,
+            for purposes of Data Modeling.
+        </p>
+
+  <!--     <p>You can access our
+            <span class="note-bold-navy">Business Narrative</span>,
+            <span class="note-bold">the Story of the European Union</span>
+            <a href="kayeILSQL-StoryEuropeanUnion.htm" target="_blank">here</a>.
+        </p>
+
+-->  
+        <p>You can access our
+            <span class="note-bold-navy">Business Narrative</span>, 
+            in the  Chapter named 
+            <span class="note-bold">The Story of the European Union</span>
+     of <b> Kaye is Learning SQL</b>.
+        </p>
+
+
+
+    </div>
+
+    <p></p>
+    <h3 id="based_on_references">Based On &mdash; Oracle Database as RDBMS</h3>
+
+    <p> This text on SQL is based on the
+        <span class="note-bold-navy">Oracle Database</span>
+        as RDBMS &mdash; Relational Database Management System.
+    </p>
+
+    <p>Although the <b>SQL Statements</b> used in this text, apply specifically
+        to the Oracle Database implementation of SQL,
+        they are generally compatible with
+        many other RDBMS SQL implementations.</p>
+
+    <p> The knowledge in the following sections are based
+        on my personal work experience, as well as on
+        several Oracle Documentation,
+        which are freely downloadable from Oracle websites.
+    </p>
+    <p>You can find a list of these documents in the
+        <a href="#references"> References</a>.
+    </p>
+    <p>The name of the documents may change in time.</p>
+    <p>
+        <span class="note-bold-navy">
+            You can refer to the Oracle Documentation if you need more detailed
+            information on any of the topics in this text.</span>
+    </p>
+    <p>Any errors present, are mine.</p>
+    <div class="note-97">
+
+        <img src="../images/c8/garden-9983.jpg" style="max-width:100% ;" height="auto" alt="Breath of Fresh Air">
+
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+    <!--  -->
+    <!--  -->
+
+    <h2 id="gen">Subqueries in General</h2>
+
+    <b></b>
+    <span class="note-bold-red"></span>
+    <span class="note-bold-navy"></span>
+
+    <div class="note-95">
+
+        <p> A <b>Query </b> is an operation that retrieves data
+            from one or more tables or views.
+        </p>
+
+        <p>We call a
+            <span class="note-bold-red">Query
+                NESTED within another SQL Statement</span>
+            a <span class="note-bold-red">Subquery</span>.
+        </p>
+    </div>
+    <p></p>
+
+
+    <ul>
+        <li><a href="#gen_1">Report Requirements</a></li>
+        <li><a href="#gen_2">Solution with Two Queries</a></li>
+        <li><a href="#gen_3">Solution with a Subquery</a></li>
+
+    </ul>
+
+    <h3 id="gen_1">Report Requirements</h3>
+
+    <div class="note-95">
+
+        <p>We want to write a report
+            that displays those countries which joined the EU
+            <b>later than Sweden</b>.
+        </p>
+
+    </div>
+    <p></p>
+
+
+
+    <h3 id="gen_2">Solution with Two Queries</h3>
+    <div class="note-95">
+
+        <p>We initially have to find out <b>Sweden's join date</b>. </p>
+        <p>We write the following query. </p>
+
+        <p>This is our
+            <span class="note-bold-red">first query</span>.
+        </p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <span class="note-bold-red">First Query</span>
+        <pre>
+select join_date
+from countries
+where country_id='SE';         
+    </pre>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p>Here is the result. </p>
+        <img src="../images/c8/gen_01.jpg" , alt="gen_01.jpg" style="max-width: 100%; height: auto;">
+        <p> </p>
+        <p><b>Sweden's join date</b> is <b>'01-JAN-95'</b>.</p>
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p>We then write
+            <span class="note-bold-red">a second query</span>,
+            which retrieves
+            countries with <b>JOIN_DATE > '01-JAN-95'</b>.
+        </p>
+        <p> </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <span class="note-bold-red">Second Query</span>
+        <pre>
+select country_id,		
+country_name,		
+join_date,		
+gdp_pps,		
+gdp 
+from countries
+where status='M' 
+and join_date > '01-JAN-95'
+order by join_date, country_id;       
+    </pre>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p>Here is the result. </p>
+        <p>Here are the countries which joined the EU
+            <b>later than Sweden</b>.
+        </p>
+        <img src="../images/c8/gen_02.jpg" , alt="gen_02.jpg" style="max-width: 100%; height: auto;">
+        <p> </p>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-117">
+
+        <p> </p>
+        <p>We wrote the report required from us,
+            in two steps, using
+            <b>two consecutive queries</b>.
+        </p>
+        <p> <span class="note-bold-red">First Query </span>
+            In the First Query,
+            we retrieved <b>Sweden's join date: </b>
+            <b>'01-JAN-95'</b>
+        </p>
+        <p> <span class="note-bold-red">Second Query </span>
+            In the Second Query,
+            we used the Output of the First Query,
+            in the
+            <b>Comparison Operator &gt; </b>
+            (join_date > '01-JAN-95')
+            to complete the report.
+        </p>
+    </div>
+    <p></p>
+
+    <b></b>
+    <span class="note-bold-red"></span>
+    <span class="note-bold-navy"></span>
+
+    <div class="note-95">
+
+        <p> However, we can solve this problem by
+            using <b>Only One Query</b>.
+        </p>
+
+    </div>
+    <p></p>
+
+    <b></b>
+    <span class="note-bold-red"></span>
+    <span class="note-bold-navy"></span>
+
+    <h3 id="gen_3">Solution with a Subquery</h3>
+    <div class="note-95">
+
+        <p>We can solve the problem by writing
+            <b>Only One Query</b>.
+        </p>
+        <p>This is where the <b>Subquery</b> comes in. </p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <span class="note-bold-red">Here is the Query We Use:</span>
+        <pre>
+select 	country_id,
+country_name,
+join_date,
+gdp_pps,
+gdp 
+from countries
+where status='M' 
+and join_date > (select	join_date
+                from countries
+                where country_id='SE')
+order by join_date, country_id;    
+</pre>
+
+    </div>
+    <p></p>
+
+
+
+    <div class="note-97">
+
+        <p>We have exactly the same result as before. </p>
+        <img src="../images/c8/gen_03.jpg" , alt="gen_03.jpg" style="max-width: 100%; height: auto;">
+        <p> </p>
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p>Let's examine this query. </p>
+
+    </div>
+    <p></p>
+
+    <h2 id="examine_subq">The Subquery Structure</h2>
+
+    <div class="note-95">
+
+        <p>We will now examine the structure of a Subquery,
+            based on the Solution of the Report above. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <span class="note-bold-red"></span>
+        <pre>
+select 	country_id,
+country_name,
+join_date,
+gdp_pps,
+gdp 
+from countries
+where status='M' 
+and join_date > <span class="note-bold-red">(select join_date
+                    from countries
+                    where country_id='SE')</span>
+order by join_date, country_id;    
+</pre>
+
+    </div>
+    <p></p>
+
+    <b></b>
+    <span class="note-bold-red"></span>
+    <span class="note-bold-navy"></span>
+
+    <div class="note-95">
+        <p>The script <b> in black </b> is the
+            <b>TOP-LEVEL QUERY</b>.
+        </p>
+        <p> The <b>TOP-LEVEL QUERY</b> can also be called;
+            the
+            <b> MAIN QUERY / OUTER QUERY / PARENT QUERY / PARENT STATEMENT</b>.
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+
+        <p>The script
+            <span class="note-bold-red">(in red and within brackets)</span>
+            is the
+            <span class="note-bold-red">SUBQUERY</span>.
+        </p>
+
+        <p>The <span class="note-bold-red">SUBQUERY</span>
+            is <span class="note-bold-navy">nested</span>
+            within the <b>PARENT STATEMENT</b>.
+        </p>
+        <p>
+            A <span class="note-bold-navy">Query Nested
+                within another SQL Statement
+            </span> is called a <span class="note-bold-red">SUBQUERY</span>.
+        </p>
+
+        <p>A <span class="note-bold-red">SUBQUERY</span>
+            can also be called an
+            <span class="note-bold-red"> INNER QUERY</span>.
+        </p>
+    </div>
+    <p></p>
+    <b></b>
+    <span class="note-bold-red"></span>
+    <span class="note-bold-navy"></span>
+
+    <div class="note-117">
+        <p>The <b>PARENT STATEMENT</b>
+            of a <span class="note-bold-red">SUBQUERY</span>
+            is <b>NOT ALWAYS </b> a SELECT Statement.
+        </p>
+        <p>The <b>PARENT STATEMENT</b> (<b>TOP-LEVEL SQL Statement</b>)
+            in which the
+            <span class="note-bold-navy">SUBQUERY is NESTED</span>,
+            can ALSO be an <b>INSERT</b>, <b>UPDATE</b> or a <b>DELETE </b> Statement.
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-95">
+        <p>A SUBQUERY can contain ANOTHER SUBQUERY. </p>
+        <p>You can nest up to 255 levels of Subqueries in a
+            Nested Subquery.
+        </p>
+        <p>For the limit on the number of Nested Subqueries
+            within Subqueries, you can check the
+            latest <a href="#references"> Oracle Documentation</a>. </p>
+        <p></p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>In <span class="note-bold-red"> any Subquery</span>,
+            <span class="note-bold-navy">OTHER THAN a Correlated Subquery</span>,
+            the <span class="note-bold-red">
+                INNER Query (the SUBQUERY);
+            </span>
+        </p>
+
+        <p></p>
+
+        <ul>
+            <li> <b>Runs FIRST</b> and</li>
+            <li> <b>EXECUTES ONCE</b> and</li>
+            <li> <b>RETURNS RESULTS ONCE </b> to be used by the
+                <span class="note-bold-red">
+                    MAIN Query (OUTER Query/PARENT Query)
+            </li>
+        </ul>
+
+
+    </div>
+
+    <p></p>
+
+
+    <p></p>
+    <div class="note-117">
+
+        <p>The order of execution is like
+            two sequential queries:
+        </p>
+
+        <ul style="font-size: larger; font-weight: bold;">
+            <li>Step 1: SUBQUERY (INNER QUERY) </li>
+            <li>Step 2: MAIN QUERY (OUTER QUERY / PARENT QUERY)</li>
+        </ul>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-95">
+
+        <p>A Subquery can be executed in a:
+        </p>
+        <ul>
+            <li>WHERE Clause
+            </li>
+            <li>FROM Clause
+            </li>
+            <li>HAVING Clause
+            </li>
+        </ul>
+    </div>
+    <p></p>
+
+    <h2 id="nota">The Notation We Will Use</h2>
+    <div class="note-95">
+        <b></b>
+        <p>There are many alternative terms for the
+            <b>Top-Level Query</b> and the <b>Subquery</b>.
+        </p>
+        <p>A <b>Top-Level Query</b> can also be called a
+            <b>Main Query / Outer Query / Parent Query / Parent Statement</b>.
+        </p>
+        <p>A <b>Subquery</b> can also be called a <b>Child Query / Inner Query</b>.</p>
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>In this Chapter we will mostly use the following terms: </p>
+        <b></b>
+        <ul>
+            For the <b>Top-Level Query</b>:
+            <li><b>MAIN QUERY</b> or the <b>OUTER QUERY</b></li>
+            <p></p>
+            For the <b>Subquery</b>:
+            <li><b>SUBQUERY</b> or the <b>INNER QUERY</b></li>
+        </ul>
+    </div>
+    <p></p>
+
+
+
+    <h2 id="gen_5">Subquery Operators</h2>
+    <div class="note-95">
+
+        <p>Below is the <b>Basic Syntax</b> of a Subquery. </p>
+        <p>Please keep in mind that there are other syntaxes.</p>
+        <p>This syntax helps us to understand the subquery operators.
+        </p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+SELECT select_list
+FROM table_name
+WHERE expression <span class="note-bold-red">subquery operator</span> 
+        (SELECT select_list
+        FROM	table_name)
+</pre>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p>The <span class="note-bold-red-larger">subquery operator</span>
+            can be;</p>
+        <ul>
+            <li>a SINGLE-ROW Operator</li>
+            <li>a MULTIPLE-ROW Operator</li>
+        </ul>
+
+    </div>
+    <p></p>
+
+    <h3 id="gen_single">Single-Row Operator</h3>
+
+    <div class="note-95">
+
+        <p>These are the
+            <span class="note-bold-red">Single-Row Operators</span>:
+        </p>
+
+        <p> </p>
+
+        <ul class="note-bold-larger">
+            <li>= (equal to) </li>
+            <li>!= (not equal to) </li>
+            <li>&#60;&#62; (not equal to) </li>
+            <li>&#62; (greater than) </li>
+            <li>&#60; (less than) </li>
+            <li>&#62;= (greater than or equal to) </li>
+            <li>&#60;= (less than or equal to) </li>
+        </ul>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p><span class="note-bold-red">Single-Row Operators</span>
+            are used with
+            <b>Single-Row Subqueries</b>.
+        </p>
+        <p>A Subquery which returns <b>Only One Row</b> from
+            the Inner Select Statement is a
+            <b>Single-Row Subquery</b>.
+        </p>
+    </div>
+    <p></p>
+
+
+
+    <p> </p>
+    <h3 id="gen_multi">Multiple-Row Operator</h3>
+    <div class="note-95">
+        <p>These are the
+            <span class="note-bold-red">Multiple-Row Operators</span>:
+        </p>
+        <p> </p>
+
+        <ul class="note-bold-larger">
+            <li>IN</li>
+            <li>ANY</li>
+            <li>ALL</li>
+        </ul>
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p><span class="note-bold-red">Multiple-Row Operators</span>
+            are used with
+            <b>Multiple-Row Subqueries</b>.
+        </p>
+        <p>A Subquery which returns <b>More Than One Row</b> from
+            the Inner Select Statement is a
+            <b>Multiple-Row Subquery</b>.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <p> </p>
+    <h2 id="sr">SINGLE-ROW Subqueries</h2>
+    <ul>
+        <li><a href="#sr_ex1">SINGLE-ROW Subquery Example 1</a></li>
+        <li><a href="#sr_ex2">SINGLE-ROW Subquery Example 2</a></li>
+        <li><a href="#sr_ex3">SINGLE-ROW Subquery Example 3</a></li>
+        <li><a href="#sr_ex4">SINGLE-ROW Subquery Example 4</a></li>
+        <li><a href="#sr_ex5">SINGLE-ROW Subquery Example 5</a></li>
+        <li><a href="#sr_ex6">SINGLE-ROW Subquery Example 6</a></li>
+        <li><a href="#sr_ex7">SINGLE-ROW Subquery Example 7</a></li>
+
+    </ul>
+
+    <h3 id="sr_ex1">SINGLE-ROW Subquery Example 1</h3>
+
+    <div class="note-95">
+
+        <p>Retrieve those countries that joined the EU
+            <b>On The Same Date</b> as the country with id 'SE'.
+        </p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select 	country_id,
+country_name,
+capital,
+join_date
+from countries
+where status='M' 
+and join_date = (select join_date
+                from countries
+                where country_id='SE')
+order by country_id;  
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Here is the output of this
+            SELECT Statement. </p>
+        <img src="../images/c8/sr_01.jpg" style="max-width:100% ;" height="auto" alt="sr_01.jpg">
+
+    </div>
+    <p></p>
+
+
+    <h3 id="sr_ex2">SINGLE-ROW Subquery Example 2</h3>
+    <div class="note-95">
+        <p>Retrieve those countries that joined the EU
+            <b>Before The Joining Date</b> of the country with id 'SE'.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select 	country_id,
+country_name,
+capital,
+join_date
+from countries
+where status='M' 
+and join_date < (select join_date
+                from countries
+                where country_id='SE')
+order by join_date, country_id;   
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>Here is the output of this
+            SELECT Statement. </p>
+        <img src="../images/c8/sr_02.jpg" style="max-width:100% ;" height="auto" alt="sr_02.jpg">
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+
+    <h3 id="sr_ex3">SINGLE-ROW Subquery Example 3</h3>
+    <div class="note-95">
+
+        <p>Retrieve the country which has the
+            <b>Minimum Purchasing Power Standard </b>
+            among the EU Member Countries.
+        </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select country_id,
+country_name,
+capital,
+gdp_pps,
+gdp,
+population,
+join_date
+from countries
+where	status='M' 
+and	gdp_pps = 
+    (select min(gdp_pps)
+    from countries
+    where status='M');  
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p> </p>
+        <p>Here is the output of this
+            SELECT Statement. </p>
+        <p>An <b>Aggregate Function (Group Function) </b>
+            is used in the subquery to select
+            the <b>minimum purchasing power standard MIN(GDP_PPS) </b>
+            among the member countries. </p>
+        <img src="../images/c8/sr_03.jpg" style="max-width:100% ;" height="auto" alt="sr_03.jpg">
+
+    </div>
+    <p></p>
+
+
+    <h3 id="sr_ex4">SINGLE-ROW Subquery Example 4</h3>
+    <div class="note-95">
+
+        <p>Retrieve the details of those countries which joined the EU
+            <b>before Sweden(SE)</b>,
+            and which have a purchasing power standard
+            <b>greater than the United Kingdom(UK)</b>.
+        </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select 	country_id,
+country_name,
+capital,
+join_date,
+gdp_pps
+from 	countries
+where	status='M' 
+and	join_date < 
+        (select join_date
+        from 	countries
+        where	country_id='SE')
+and	gdp_pps >
+        (select gdp_pps
+        from	countries
+        where	country_id='UK')
+order by gdp_pps desc;  
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>This SELECT Statement uses <b>two subqueries</b>: </p>
+        <ol>
+            <li>to retrieve the details of those countries which joined the EU
+                <b>before Sweden(SE)</b>,
+            </li>
+            AND
+            <li>to retrieve the details of those countries which
+                have a purchasing power standard
+                <b>greater than the United Kingdom(UK)</b>.
+            </li>
+        </ol>
+        <p> </p>
+        <img src="../images/c8/sr_04.jpg" style="max-width:100% ;" height="auto" alt="sr_04.jpg">
+    </div>
+    <p></p>
+
+
+    <h3 id="sr_ex5">SINGLE-ROW Subquery Example 5</h3>
+    <div class="note-95">
+
+        <p>In our database, in the <b>COUNTRIES</b> table,
+            there are three distinct values
+            for the column <b>STATUS</b>. </p>
+        <p>These three distinct values of the <b>STATUS</b> column are: </p>
+        <ol>
+            <li>M for the Member Countries</li>
+            <li>C for the Candidate Countries</li>
+            <li>O for the Others</li>
+        </ol>
+        <p>We can say that we have three categories of STATUS. </p>
+        <p>We want retrieve the minimum gdp_pps for
+            different categories of STATUS,
+            IF these minimum values of gdp_pps are
+            GREATER THAN the minimum gdp_pps of
+            countries with a status of 'C'. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	status,	
+min(gdp_pps)
+from countries	
+group by status
+having	min(gdp_pps) >
+    (select min(gdp_pps)
+    from countries
+    where	status='C');
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p> </p>
+        <p>Here is the output of the
+            query. </p>
+        <p>The <b>INNER Query</b> returns the
+            <b> "minimum gdp_pps MIN(GDP_PPS) of Candidate countries"</b>.
+        </p>
+        <p><b>HAVING Clause</b>
+            eliminates those rows in the <b>MAIN Query</b>,
+            that have <span class="note-bold-red">
+                minimum gdp_pps values
+                less than or equal to </span>
+            the value returned by the <b>INNER Query</b>. </p>
+
+        <img src="../images/c8/sr_05.jpg" style="max-width:100% ;" height="auto" alt="sr_05.jpg">
+    </div>
+    <p></p>
+
+    <h3 id="sr_ex6">SINGLE-ROW Subquery Example 6</h3>
+    <div class="note-95">
+
+        <p>The SELECT statement below wants to retrieve those countries
+            which joined
+            the EU on the same date as the <b>country 'SWEDEN'</b>. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	country_id,
+country_name,
+gdp_pps,
+join_date
+from	countries
+where	join_date =
+        (select	join_date
+        from	countries
+        where	country_name='SWEDEN');   
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>Here is the output of the SELECT statement.
+        </p>
+        <p>We can see that NO Rows are retrieved. </p>
+
+        <p> </p>
+        <p> </p>
+        <img src="../images/c8/sr_06.jpg" style="max-width:100% ;" height="auto" alt="sr_06.jpg">
+
+        <p>Below is the Subquery.</p>
+    </div>
+    <p></p>
+
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	join_date
+from	countries
+where	country_name='SWEDEN'
+</pre>
+
+    </div>
+    <p></p>
+    <div class="note-117">
+
+        <p>We can see below that the Subquery Returns NO Rows. </p>
+        <p>This is because, the country name is stored as
+            <b>'Sweden'</b> which is <b>INITCAP</b>,
+            and <b>NOT in UPPERCASE</b>.
+        </p>
+        <p>The value of the <b>JOIN_DATE</b> retuened is <b>NULL</b>.</p>
+        <img src="../images/c8/sr_06_2.jpg" style="max-width:100% ;" height="auto" alt="sr_06_2.jpg">
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p>The <b>MAIN Query</b> compares <b>NULL</b> with the
+            values of the <b>JOIN_DATE column in the whole table</b>,
+            using the <b>EQUAL TO = </b> operator.
+        </p>
+
+        <pre style="font-size: larger; font-weight: bold;">
+where join_date =
+    (select join_date
+    from countries
+    where country_name='SWEDEN');      
+</pre>
+        <p>In fact, there is more than one country
+            which have NULL values in their JOIN_DATE columns.
+            These are the countries with status of 'C' and 'O'.</p>
+
+        <p><b>Comparison of two NULLS using the "= Operator"
+                (and also using the other Comparison Operators)
+                yields a NULL.</b>
+        </p>
+        <p>Therefore, the condition above will yield a NULL.</p>
+        <p>A row will ONLY be RETURNED if the condition yields a TRUE,
+            therefore NO ROWS are returned.</p>
+        <p></p>
+    </div>
+    <p></p>
+    <p></p>
+
+
+    <h3 id="sr_ex7">SINGLE-ROW Subquery Example 7</h3>
+
+    <div class="note-95">
+
+        <p>Within the set of countries when grouped by
+            <b>STATUS (M=Member, C=Candidate, O=Others)</b>,
+            we want to display ONLY the sets with
+            <b>the highest average gdp_pps</b>.
+        </p>
+        <p>We want the report to display the "STATUS",
+            "minimum gdp_pps", "average gdp_pps", and the
+            "maximum gdp_pps" of such a set.
+        </p>
+        <p>The query below, with
+            a <b>HAVING Clause</b> retrieves the required
+            information.
+        </p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	status,
+MIN(GDP_PPS),  
+AVG(gdp_pps), 
+MAX(GDP_PPS)
+from countries
+group by status
+having AVG(gdp_pps) = 
+            (select max(avg(gdp_pps))
+            from	countries
+            group by status)
+order by status  
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>We can see the output of this query below. </p>
+        <img src="../images/c8/sr_07.jpg" style="max-width:100% ;" height="auto" alt="sr_07.jpg">
+    </div>
+    <p></p>
+    <div class="note-117">
+
+        <p>Below is another query giving the same result. </p>
+
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+        <pre>
+select	status,
+MIN(GDP_PPS),  
+AVG(gdp_pps), 
+MAX(GDP_PPS)
+from countries
+group by status
+having AVG(gdp_pps) = 
+            (select max(avgdp) from
+                (select status, 
+                avg(gdp_pps) avgdp
+                from countries
+                group by status)
+            )
+order by status  
+</pre>
+
+    </div>
+    <p></p>
+
+
+
+
+    <h2 id="mr">MULTIPLE-ROW Subqueries</h2>
+    <div class="note-95">
+
+        <p><b>MULTIPLE-ROW Subqueries</b> return
+            <b>MORE THAN ONE</b> Row.
+        </p>
+
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p><span class="note-bold-red">MULTIPLE-ROW Operators:</span></p>
+        <ul><span class="note-bold-red"></span>
+            <li><span class="note-bold-red">IN</span>
+                Equal to any member in the Subquery Result Set
+            </li>
+            <li><span class="note-bold-red">ANY</span>
+                Condition must be <b>TRUE </b>
+                for
+                <b>AT LEAST ONE VALUE </b>
+                in the Subquery Result Set
+            </li>
+            <li><span class="note-bold-red">ALL</span>
+                Condition must be <b>TRUE </b>
+                for
+                <b>ALL THE VALUES </b>
+                in the Subquery Result Set
+            </li>
+        </ul>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p> </p>
+
+    </div>
+    <p></p>
+    <ul>
+        <li><a href="#mr_ex1">MULTIPLE-ROW IN</a></li>
+        <li><a href="#mr_ex2">MULTIPLE-ROW ANY</a></li>
+        <li><a href="#mr_ex3">MULTIPLE-ROW ALL</a></li>
+    </ul>
+
+    <h3 id="mr_ex1">MULTIPLE-ROW IN</h3>
+    <div class="note-95">
+
+        <p>We want to retrieve those countries which have
+            the <b> HIGHEST GDP(Gross Domestic Product)</b>
+            within each <b>STATUS ('M', 'C', 'O') Group</b>. </p>
+        <p>We write the following query.</p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	COUNTRY_ID,
+COUNTRY_NAME,	
+CASE	STATUS
+    WHEN 'M' THEN 'Member'
+    WHEN 'C' THEN 'Candidate'
+    WHEN 'O' THEN 'Other'
+END STATUS_CLASS,
+GDP
+FROM	COUNTRIES
+WHERE	GDP =
+    (SELECT	MAX(GDP)
+    FROM	COUNTRIES
+    GROUP BY STATUS)
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Here is the output. </p>
+        <img src="../images/c8/mr_01.jpg" style="max-width:100% ;" height="auto" alt="mr_01.jpg">
+    </div>
+    <p></p>
+    <div class="note-117">
+        <p>We receive the following error:</p>
+        <p class="note-bold-italic">ORA-01427: single-row subquery returns more than one row <br>
+            01427. 00000 - "single-row subquery returns more than one row" </p>
+        <p>We receive this error, because the Subquery returns
+            multiple rows, whereas the <b> "=" is a Single-Row Operator</b> and
+            <b>EXPECTS only ONE ROW</b> to be returned from the Subquery.
+        </p>
+        <p>Here is the Subquery on its own.</p>
+        <p>We can see that it returned three rows, one per Status Group.</p>
+        <img src="../images/c8/mr_03.jpg" style="max-width:100% ;" height="auto" alt="mr_03.jpg">
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-95">
+
+        <p>Our mistake is that, we are using
+            a <b>Single-Row operator (=)</b>
+            for the Subquery. </p>
+
+        <pre>
+<p class="note-bold-red-larger">   
+. 
+.   
+WHERE	GDP =
+(SELECT	MAX(GDP)
+FROM	COUNTRIES
+GROUP BY STATUS)    
+</p> 
+</pre>
+        <p>If we alter the SELECT statement as below and
+            use a <b>Multiple-Row Operator</b> instead,
+            we do get the result set we want. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	COUNTRY_ID,
+COUNTRY_NAME,	
+CASE	STATUS
+    WHEN 'M' THEN 'Member'
+    WHEN 'C' THEN 'Candidate'
+    WHEN 'O' THEN 'Other'
+END STATUS_CLASS,
+GDP
+FROM COUNTRIES
+WHERE GDP IN
+    (SELECT	MAX(GDP)
+    FROM	COUNTRIES
+    GROUP BY STATUS)
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Countries with
+            the <b> HIGHEST GDP(Gross Domestic Product)</b>
+            within each <b>STATUS ('M', 'C', 'O') Group</b>
+            are displayed. </p>
+        <img src="../images/c8/mr_02.jpg" style="max-width:100% ;" height="auto" alt="mr_02.jpg">
+
+    </div>
+    <p></p>
+    <div class="note-117">
+
+        <p>The <b>Main Query</b>
+            appears to the server as
+            the following. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	COUNTRY_ID,
+COUNTRY_NAME,	
+CASE	STATUS
+    WHEN 'M' THEN 'Member'
+    WHEN 'C' THEN 'Candidate'
+    WHEN 'O' THEN 'Other'
+END STATUS_CLASS,
+GDP
+FROM	COUNTRIES
+WHERE	GDP IN
+    (10509000000000, 2322000000000, 319000000000)
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p> </p>
+        <img src="../images/c8/beautiful_sql_04.jpg" style="max-width:100% ;" height="auto" alt="beautiful_sql_04.jpg">
+
+    </div>
+    <p></p>
+
+    <h3 id="mr_ex2">MULTIPLE-ROW ANY</h3>
+    <div class="note-95">
+
+        <p><b>ANY</b> Operator and
+            <b>SOME</b> Operator are SYNONYMS.
+        </p>
+        <p><b>ANY</b> compares a Value
+            to <b>EACH Value </b> returned by a Subquery. </p>
+        <b></b>
+        <span class="note-bold-red"></span>
+        <p>The Condition
+            <span class="note-bold-red">must hold for </span>
+            <b>AT LEAST ONE Value in the Result Set of the Subquery</b>.
+        </p>
+        <p></p>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p style="font-size: larger;">
+            <b> = ANY </b> is equivalent to <b>IN</b>.
+        </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p style="font-size: larger;">
+            <b> &#60; ANY </b> is equivalent to
+            <b>LESS THAN the MAXIMUM</b>.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p> </p>
+        <p style="font-size: larger;">
+            <b> &#62; ANY </b> is equivalent to
+            <b>GREATER THAN the MINIMUM</b>.
+        </p>
+    </div>
+    <p></p>
+    <div class="note-95">
+        <p><b>Report Requirement</b> </p>
+        <p>We are asked to create a report of
+            those countries which are <b>Members</b>,
+            and which have GDPs <b>LESS THAN ANY </b>
+            of the <b>Candidate</b> countries.
+            The result set will be in descending GDP values. </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	COUNTRY_ID,
+COUNTRY_NAME,	
+GDP
+FROM	COUNTRIES
+WHERE	GDP < ANY
+    (SELECT	GDP
+    FROM	COUNTRIES
+    WHERE 	STATUS='C')
+AND	STATUS='M'
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>Here is the Result Set of the Query. </p>
+        <img src="../images/c8/mr_any_01.jpg" style="max-width:100% ;" height="auto" alt="mr_any_01.jpg">
+
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p>Below is the <b>INNER Query / SUBQUERY</b>. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	GDP
+FROM	COUNTRIES
+WHERE 	STATUS='C'
+</pre>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p>This is what the <b>INNER Query / SUBQUERY</b> returns. </p>
+        <img src="../images/c8/mr_any_02.jpg" style="max-width:100% ;" height="auto" alt="mr_any_02.jpg">
+
+        <p style="font-size: larger;">
+            <b> &#60; ANY </b> is equivalent to
+            <b>LESS THAN the MAXIMUM</b>.
+        </p>
+        <p>The <b>MAXIMUM</b> value in the
+            Result Set of the <b>SUBQUERY</b> is
+            <b>319000000000</b>.
+        </p>
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p>Therefore, the <b>MAIN QUERY</b> appears to the Server as
+            the following. </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	COUNTRY_ID,
+COUNTRY_NAME,	
+GDP
+FROM	COUNTRIES
+WHERE	GDP   <  319000000000
+AND	STATUS='M'
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+
+    <div class="note-95">
+
+        <p>These are the rows of
+            <b>Member Countries</b>, whose GDPs are
+            <b>LESS THAN THE MAXIMUM GDP </b>
+            in the
+            <b> RESULT SET OF
+                THE INNER QUERY</b>.
+        </p>
+        <img src="../images/c8/mr_any_03.jpg" style="max-width:100% ;" height="auto" alt="mr_any_03.jpg">
+
+        <p>We achieved this result using the
+            <b> &#60; ANY </b> Operator:
+        </p>
+        <pre>
+            <p style="font-size: larger;">
+SELECT COUNTRY_ID,
+COUNTRY_NAME,	
+GDP
+FROM COUNTRIES
+WHERE GDP <b> &#60; ANY</b>
+    (SELECT GDP
+    FROM COUNTRIES
+    WHERE STATUS='C')
+AND	STATUS='M'
+ORDER BY GDP DESC;
+        </p>  
+            </pre>
+
+    </div>
+    <p></p>
+
+
+    <h3 id="mr_ex3">MULTIPLE-ROW ALL</h3>
+
+    <div class="note-95">
+
+        <p><b>ALL </b> compares a Value to <b>EVERY Value </b>
+            returned by a Subquery. </p>
+        <b></b>
+        <span class="note-bold-red"></span>
+        <p>The Condition
+            <span class="note-bold-red">must hold for </span>
+            <b>ALL Values in the Result Set of the Subquery</b>.
+        </p>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p style="font-size: larger;">
+            <b> != ALL </b> is equivalent to <b>NOT IN</b>.
+        </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+        <p style="font-size: larger;">
+            <b> &#60; ALL </b> is equivalent to
+            <b>LESS THAN the MINIMUM</b>.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p> </p>
+        <p style="font-size: larger;">
+            <b> &#62; ALL </b> is equivalent to
+            <b>GREATER THAN the MAXIMUM</b>.
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-95">
+        <p><b>Report Requirement</b> </p>
+        <p>We are asked to create a report of
+            those countries which are <b>Members</b>,
+            and which have GDPs <b>LESS THAN ALL </b>
+            of the <b>Candidate</b> countries.
+            The result set will be in descending GDP values. </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT COUNTRY_ID,
+COUNTRY_NAME,	
+GDP
+FROM COUNTRIES
+WHERE GDP < ALL
+    (SELECT GDP
+    FROM	COUNTRIES
+    WHERE 	STATUS='C')
+AND STATUS='M'
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Here is the Result Set of the Query. </p>
+        <p> Zero rows returned, i.e. NO ROWS are returned. </p>
+        <img src="../images/c8/mr_all_01.jpg" style="max-width:100% ;" height="auto" alt="mr_all_01.jpg">
+    </div>
+    <p></p>
+
+    <div class="note-95">
+
+        <p>Below is the <b>INNER Query / SUBQUERY</b>. </p>
+        <p style="font-style: italic;">ORDER BY is for displaying the data more meaningfully.
+            It is not in the actual subquery.
+        </p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT GDP
+FROM COUNTRIES
+WHERE STATUS='C'
+ORDER BY GDP
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>This is what the <b>INNER Query / SUBQUERY</b> returns. </p>
+        <img src="../images/c8/mr_all_02.jpg" style="max-width:100% ;" height="auto" alt="mr_all_02.jpg">
+        <p></p>
+        <p style="font-size: larger;">
+            <b> &#60; ALL </b> is equivalent to
+            <b>LESS THAN the MINIMUM</b>.
+        </p>
+        <p>The <b>MINIMUM</b> value in the
+            Result Set of the <b>SUBQUERY</b> is
+            <b>5000000000</b>.
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-95">
+
+        <p>Therefore, the <b>MAIN QUERY</b> appears to the Server as
+            the following. </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+
+
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT COUNTRY_ID,
+COUNTRY_NAME,	
+GDP
+FROM COUNTRIES
+WHERE GDP < 5000000000
+AND STATUS='M'
+ORDER BY GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>The query returns <b>NO ROWS</b>. </p>
+        <p>This is because,
+            there is <b>NO </b> Member Country
+            with a GDP which is
+            <b>LESS THAN the MINIMUM GDP </b> in the
+            <b>Result Set of the INNER QUERY</b>.
+
+        </p>
+        <img src="../images/c8/mr_all_03.jpg" style="max-width:100% ;" height="auto" alt="mr_all_03.jpg">
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-117">
+
+        <p> </p>
+        <p>We achieved this result using the
+            <b> &#60; ALL </b> Operator:
+        </p>
+        <pre>
+            <p style="font-size: larger;">
+SELECT COUNTRY_ID,
+COUNTRY_NAME,	
+GDP
+FROM COUNTRIES
+WHERE GDP <b> &#60; ALL</b>
+    (SELECT GDP
+    FROM COUNTRIES
+    WHERE STATUS='C')
+AND	STATUS='M'
+ORDER BY GDP DESC;
+        </p>  
+            </pre>
+    </div>
+    <p></p>
+
+
+    <h2 id="nv">NULL Values in a Subquery</h2>
+    <ul>
+        <li><a href="#nv_1">Report Requirements</a></li>
+        <li><a href="#nv_98">The Query for the Report Requirement</a></li>
+        <li><a href="#nv_2">Result Set of the Query</a></li>
+        <li><a href="#nv_3">The Outer Query</a></li>
+        <li><a href="#nv_4">The Inner Query</a></li>
+        <li><a href="#nv_99">The Result We Expect</a></li>
+
+        <li><a href="#nv_5">Some Questions on a Query Returning Rows</a></li>
+        <li><a href="#nv_6">Our Particular Case</a></li>
+        <li><a href="#nv_7">Let's Get This Right</a></li>
+    </ul>
+
+    <h3 id="nv_1">Report Requirements</h3>
+
+    <div class="note-95">
+
+        <p>We want to find out those Political Groups that
+            <b>DO NOT HAVE</b> any Members of the European Parliament.
+        </p>
+
+    </div>
+    <p></p>
+    <h3 id="nv_98">The Query for the Report Requirement</h3>
+
+    <div class="note-95">
+
+
+        <p>As an answer to the Report Requirement,
+            we create and run the following query.</p>
+    </div>
+    <p></p>
+
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+select pg_id,
+pg_code,
+pg_name
+from political_groups
+where pg_id NOT IN 
+    (select distinct pg_id
+    from meps);
+</pre>
+
+    </div>
+    <p></p>
+    <h3 id="nv_2">Result Set of the Query</h3>
+    <div class="note-97">
+        <p>This is the Result Set of the query. </p>
+        <p>The query returns <b>NO ROWS !?</b> </p>
+        <img src="../images/c8/nv_01.jpg" style="max-width:100% ;" height="auto" alt="nv_01.jpg">
+    </div>
+    <p></p>
+    <div class="note-117">
+
+        <p>We now run the query above which returned <b>NO ROWS</b>,
+            as two separate Queries: </p>
+        <ul>
+            <li>The Outer Query</li>
+            <li>The Inner Query</li>
+        </ul>
+    </div>
+    <p></p>
+
+    <h3 id="nv_3">The Outer Query</h3>
+    <div class="note-95">
+        <span class="note-bold-red"></span>
+        <p>Here is the <b>Outer Query</b>
+            <span class="note-bold-red">WITHOUT</span> the
+            <b>WHERE Clause for the INNER QUERY</b>.
+        </p>
+        <p><b>ORDER BY Clause</b> is added for display purposes only. </p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+select pg_id,
+pg_code,
+pg_name
+from political_groups
+order by pg_id;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>The <b>Outer Query</b> returned 9 rows. </p>
+        <p>These are the 9 Political Groups of the European Parliament. </p>
+        <p>They
+            <span class="note-bold-red">MIGHT NOT </span>
+            all have Members of the Parliament.
+        </p>
+        <img src="../images/c8/nv_02.jpg" style="max-width:100% ;" height="auto" alt="nv_02.jpg">
+    </div>
+    <p></p>
+
+
+    <h3 id="nv_4">The Inner Query</h3>
+    <div class="note-95">
+
+        <p>We now run the <b>INNER QUERY</b> on its own. </p>
+        <p>We include the <b>ORDER BY Clause</b>
+            for display purposes only. </p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+select distinct pg_id
+from meps
+order by pg_id;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Here is the output of the <b>INNER QUERY</b>. </p>
+        <p>These are the Political Groups of the European Parliament,
+            <span class="note-bold-red">that HAVE </span>
+            Members of the Parliament.
+        </p>
+        <p>The last row with a <b>NULL Value</b> indicates the
+            <b>Non-Attached Members</b> of the European Parliament.
+        </p>
+        <p>As we know from our Data Model,
+            the Non-Attached Members of the Parliament
+            have a <b>NULL PG_ID</b>.
+        </p>
+        <p> </p>
+        <img src="../images/c8/nv_03.jpg" style="max-width:100% ;" height="auto" alt="nv_03.jpg">
+    </div>
+    <p></p>
+
+    <h3 id="nv_99">The Result We Expect</h3>
+    <div class="note-117">
+
+        <p>The result set of the <b>Outer Query</b> is: (20, 40, 60, 80, 100, 140, 160, 200901, 200902)</p>
+        <p>The result set of the <b>Inner Query</b> is: (20, 40, 60, 80, 100, 140, 160, NULL)</p>
+    </div>
+    <p></p>
+
+    <div class="note-117">
+
+        <p>Looking at the Result Sets of the
+            <b>Outer Query</b> and the <b>Inner Query</b>,
+            the logical result we expect to see is the following
+            two political groups: (200901, 200902)
+        </p>
+        <p></p>
+
+        <table>
+            <tr>
+                <th>PG_ID</th>
+                <th>PG_CODE</th>
+                <th>PG_NAME</th>
+            </tr>
+            <tr>
+                <td>200901</td>
+                <td>NEW-EN</td>
+                <td>Group of the New Energy</td>
+            </tr>
+            <tr>
+                <td>200902</td>
+                <td>IE-IT</td>
+                <td>Group of the Innovation Economy and Information Technology</td>
+            </tr>
+        </table>
+
+
+        <p>Obviously, these are the two Political Groups that <b>DO NOT HAVE</b>
+            any Members. </p>
+    </div>
+    <p></p>
+    <span class="note-bold-red"></span>
+    <div class="note-117">
+
+        <p>But, why don't they appear in the Result Set of Our Query? </p>
+        <p>Why is the Result Set of Our Query seen below, has No Rows? </p>
+
+        <p></p>
+
+        <div class="note-charcoal-a30-large">
+
+            <pre>
+select pg_id,
+pg_code,
+pg_name
+from political_groups
+where pg_id NOT IN 
+    (select distinct pg_id
+    from meps);
+    </pre>
+
+        </div>
+        <p></p>
+
+
+    </div>
+    <p></p>
+    <h3 id="nv_5">Some Questions on a Query Returning Rows</h3>
+
+    <div class="note-95">
+        <p><span class="note-bold-red">Question: </span>
+            When does a <b>Query Return any Rows?</b> </p>
+        <p> </p>
+        <p><span class="note-bold-red">Answer: </span>
+            <b>A Query Returns Rows</b>, when
+            the Logical Condition/Conditions in the WHERE Clause
+            <b>Evaluate to TRUE</b>.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <div class="note-95">
+        <p><span class="note-bold-red">Question: </span>
+            What can the Logical Condition/Conditions in the WHERE Clause
+            <b>Evaluate to?</b>
+        </p>
+        <p> </p>
+        <p><span class="note-bold-red">Answer: </span>
+            The <b>Logical Condition/Conditions</b> in a
+            <b>WHERE Clause</b>
+            can evaluate to one of the below:
+        <ul class="note-bold">
+            <li>TRUE</li>
+            <li>FALSE</li>
+            <li>NULL</li>
+        </ul>
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <div class="note-95">
+        <p><span class="note-bold-red">Question: </span>
+            What does the Condition in our query seen below,
+            <b>Evaluate to?</b>
+        </p>
+        <div class="note-charcoal-a30-large">
+            <pre>
+where pg_id NOT IN 
+    (select distinct pg_id
+    from meps);
+</pre>
+        </div>
+        <p> </p>
+        <p><span class="note-bold-red">Answer: </span>
+            This is a lengthy answer.
+        </p>
+        <p>We will see how to proceed, in the
+            <a href="#nv_6">next section</a>.
+        </p>
+
+    </div>
+    <p></p>
+
+
+
+
+
+    <h3 id="nv_6">Our Particular Case</h3>
+
+    <div class="note-95">
+
+        <p>The query in our example is seen below: </p>
+
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+select pg_id,
+pg_code,
+pg_name
+from political_groups <span class="note-bold-red">
+where pg_id NOT IN 
+    (select distinct pg_id
+    from meps);    
+</span>
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>During query execution, the
+            <span class="note-bold-red"> WHERE Clause Condition </span>
+            becomes:
+        </p>
+
+
+        <p><b>(20, 40, 60, 80, 100, 140, 160, 200901, 200902) <br>
+                NOT IN <br>
+                (20, 40, 60, 80, 100, 140, 160, NULL) </b> </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p>Each value in the <b>First Set</b>
+            <span class="note-bold-red">
+                (Result Set of the OUTER Query)</span>
+            is compared with each value in the <b>Second Set</b>
+            <span class="note-bold-red"> (Result Set of the INNER Query)</span>.
+        </p>
+        <p> </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <div class="note-97">
+
+        <p>There are <b>Nine 9 Values</b> in the <b>First Set</b>,
+            therefore there will be
+            <span class="note-bold-red">
+                Nine 9 Comparison Conditions</span>.
+        </p>
+        <p>Any Comparison Condition which yields
+            <span class="note-bold-red">
+                TRUE</span>, <b>will return</b> that value from the <b>First Set</b>.
+        </p>
+    </div>
+    <p></p>
+
+    <div class="note-117">
+
+        <p><span class="note-bold-red">
+                REMINDER</span>
+        </p>
+        <div class="note-charcoal-a30-large">
+            <p>WHERE variable_01 NOT IN (variable_02, variable_03) </p>
+        </div>
+        <p><span class="note-bold-red">
+                IS IDENTICAL TO</span> </p>
+        <div class="note-charcoal-a30-large">
+            <p>WHERE (variable_01 != variable_02) AND (variable_01 != variable_03)
+
+            </p>
+        </div>
+        <p></p>
+
+    </div>
+    <p></p>
+
+    <h4 id="nv_c1">First Comparison</h4>
+    <div class="note-95">
+        <span class="note-bold-red">
+            FIRST CONDITION</span>
+        <p>The value <b>20</b> in the <b>First Set</b> is
+            compared with each of the values in the <b>Second Set</b>. </p>
+        <div class="note-white-larger">
+            <p>20!=20 AND 20!=40 AND 20!=60 AND 20!=80 AND 20!=100 AND 20!=140 AND 20!=160 AND 20!=NULL
+
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p> FALSE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND NULL </p>
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p> FALSE</p>
+        </div>
+        <p>Therefore, the <b>First Condition</b> does <b>NOT RETURN</b> any rows.
+        </p>
+
+        <p>Hence, the row with <b>pg_id = 20</b>
+            is <b>NOT SELECTED</b>.
+        </p>
+    </div>
+
+    <p></p>
+
+    <!-- -->
+
+    <h4 id="nv_c2">Second Comparison</h4>
+
+    <div class="note-95">
+        <span class="note-bold-red">
+            SECOND CONDITION</span>
+        <p>The value <b>40</b> in the <b>First Set</b> is
+            compared with each of the values in the <b>Second Set</b>. </p>
+        <div class="note-white-larger">
+            <p>40!=20 AND 40!=40 AND 40!=60 AND 40!=80 AND 40!=100 AND 40!=140 AND 40!=160 AND 40!=NULL
+
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p>TRUE AND FALSE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND NULL </p>
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p> FALSE</p>
+        </div>
+        <p>Therefore, the <b>Second Condition</b> does <b>NOT RETURN</b> any rows.
+        </p>
+
+        <p>Hence, the row with <b>pg_id = 40</b>
+            is <b>NOT SELECTED</b>.
+        </p>
+
+        <p></p>
+
+    </div>
+    <p></p>
+    <!-- -->
+
+
+    <h4 id="nv_c3_7">Third to Seventh Comparisons</h4>
+    <div class="note-95">
+        <span class="note-bold-red">
+            Likewise for THIRD to SEVENTH CONDITIONS</span>
+        <p>Similarly, all of the
+            <b>Third to Seventh Conditions</b> evaluate to <b>FALSE</b>.
+        </p>
+        <p>Hence, they <b>DO NOT RETURN</b> any rows either. </p>
+        <p><b>60, 80, 100, 140 and 160 </b> are <b>NOT SELECTED</b> </p>
+
+    </div>
+    <p></p>
+    <h4 id="nv_c8">Eighth Comparison</h4>
+    <div class="note-95">
+        <span class="note-bold-red">
+            EIGHTH CONDITION</span>
+        <p> </p>
+        <p>The value <b>200901</b> in the <b>First Set</b> is
+            compared with each of the values in the <b>Second Set</b>. </p>
+        <div class="note-white-larger">
+            <p>200901!=20 AND 200901!=40 AND 200901!=60 AND
+                200901!=80 AND 200901!=100 AND 200901!=140 AND 200901!=160 AND
+                200901!=NULL
+
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p>TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND NULL
+            </p>
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p> NULL</p>
+        </div>
+        <p>Therefore, the <b>Eighth Condition</b> does <b>NOT RETURN</b> any rows.
+        </p>
+
+        <p>Hence, the row with <b>pg_id = 200901</b>
+            is <b>NOT SELECTED</b>.
+        </p>
+
+        <p></p>
+        <p> </p>
+    </div>
+    <p></p>
+
+    <h4 id="nv_c9">Ninth Comparison</h4>
+    <div class="note-95">
+        <span class="note-bold-red">
+            NINTH CONDITION</span>
+        <p> </p>
+        <p> </p>
+        <p>The value <b>200902</b> in the <b>First Set</b> is
+            compared with each of the values in the <b>Second Set</b>. </p>
+        <div class="note-white-larger">
+            <p>200902!=20 AND 200902!=40 AND 200902!=60 AND
+                200902!=80 AND 200902!=100 AND 200902!=140 AND 200902!=160 AND
+                200902!=NULL
+
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p>TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND NULL
+            </p>
+        </div>
+        <p>which evaluates to; </p>
+        <div class="note-white-larger">
+            <p> NULL</p>
+        </div>
+        <p>Therefore, the <b>Ninth Condition</b> does <b>NOT RETURN</b> any rows.
+        </p>
+
+        <p>Hence, the row with <b>pg_id = 200902</b>
+            is <b>NOT SELECTED</b>.
+        </p>
+
+        <p></p>
+        <p> </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <span class="note-bold-red">
+    </span>
+    <p> </p>
+    <p> </p>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p><span class="note-bold-red">NONE
+            </span> of the <b>NINE Comparison Conditions </b>
+            returned <span class="note-bold-red">TRUE
+            </span>. </p>
+        <p>Therefore, <span class="note-bold-red">
+                NO ROWS are RETURNED</span>.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+
+    <h3 id="nv_7">Let's Get This Right</h3>
+
+    <div class="note-95">
+
+        <p>The query should be re-written as follows: </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+select pg_id,
+pg_code,
+pg_name
+from political_groups
+where	pg_id  NOT IN 
+        (select	 distinct pg_id
+        from meps
+        where pg_id is NOT NULL);
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>We added the <b>WHERE Condition</b> seen below
+            into the <b>INNER QUERY</b>.</p>
+        <p>This <b>WHERE Condition</b> makes sure that there will be
+            <b>only NON NULL values</b> in the Result Set of the <b>INNER QUERY</b>.
+        </p>
+
+
+        <div class="note-charcoal-a30-large">
+            <pre>
+where pg_id is NOT NULL
+</pre>
+        </div>
+        <p></p>
+        </p>
+        <p>We can now see the Political Groups
+            that <b>DO NOT HAVE </b> any Members of the Parliament just as yet. </p>
+
+        <img src="../images/c8/nv_04.jpg" style="max-width:100% ;" height="auto" alt="nv_04.jpg">
+    </div>
+    <p></p>
+    <div class="note-117">
+<div style="font-size: xx-large; font-weight: bold;">
+        <p>"Success is not final; </p>
+        <p>Failure is not fatal. </p>
+        <p>It is the courage to continue that counts." </p>
+        <p> &mdash; Winston Churchill</p>
+</div>
+    </div>
+    <p></p>
+
+    <img src="../images/c8/churchill_01.png" style="max-width:100% ;" height="auto" alt="churchill_01.png">
+
+
+    <h2 id="ilv">FROM Clause Query / INLINE VIEW</h2>
+
+    <div class="note-95">
+
+        <p>We want to retrieve details of
+            those countries which have a <b>GDP</b>
+            <span class="note-bold-red">MORE THAN</span> the
+            <b>Average GDP of their Status Group</b>.
+        </p>
+        <p>Please remember that there are three Groups of Status in our Database: </p>
+        <ul>
+            <li>'M' for Member countries</li>
+            <li>'C' for Candidate countries </li>
+            <li>'O' for Other countries</li>
+        </ul>
+
+
+    </div>
+    <p></p>
+    <div class="note-95">
+
+        <p>In the Query which brings us the required rows,
+            we use an <b>INNER Query within the FROM Clause</b>. </p>
+        <p>This <b>INNER Query in the FROM Clause</b>
+            is treated like a
+            <span class="note-bold-red">"temporary table"</span>
+            during the lifetime of the query.
+        </p>
+        <ul>
+            <li>It can be given an <b>alias</b> just like any other table.</li>
+            <li>Its column names can be given an <b>alias</b> just like in any other query.</li>
+            <li>Its column aliases are treated as column names by the <b>OUTER Query</b>. </li>
+        </ul>
+    </div>
+    <p></p>
+
+    <div class="note-95">
+
+        <p>An
+            <b>INNER Query within the FROM Clause</b> of a SELECT Statement
+            is also called an
+            <span class="note-bold-red">INLINE VIEW</span>.
+        </p>
+        <p>Here is our Query: </p>
+        <p> </p>
+        <p> </p>
+    </div>
+    <p></p>
+
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT C_ALL.COUNTRY_NAME,		
+C_ALL.STATUS,	
+C_ALL.GDP,
+ROUND(C_AVG_GDP.AVG_GDP) "Average GDP of Status Group"
+FROM COUNTRIES C_ALL, 	
+        (SELECT	STATUS,	
+        AVG(GDP) AVG_GDP
+        FROM COUNTRIES
+        GROUP BY STATUS) C_AVG_GDP
+WHERE C_ALL.STATUS = C_AVG_GDP.STATUS
+AND C_ALL.GDP > C_AVG_GDP.AVG_GDP
+ORDER BY C_ALL.STATUS, C_ALL.GDP DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Here is the Result Set of the query: </p>
+        <img src="../images/c8/inline_01.jpg" style="max-width:100% ;" height="auto" alt="inline_01.jpg">
+
+    </div>
+    <p></p>
+
+    <h2 id="tn">TOP-N Query</h2>
+    <ul>
+        <li><a href="#tn_1">TOP-N Using the ROWNUM Pseudocolumn</a></li>
+        <li><a href="#tn_2">TOP-N Using the Analytic Function ROW_NUMBER</a></li>
+
+    </ul>
+    <h3 id="tn_1">TOP-N Query Using the ROWNUM Pseudocolumn</h3>
+    <ul>
+        <li><a href="#tn_1_problem">Problem</a></li>
+        <li><a href="#tn_1_rownum">What is ROWNUM?</a></li>
+        <li><a href="#tn_1_s1">Step 1</a></li>
+        <li><a href="#tn_1_s2">Step 2</a></li>
+    </ul>
+
+    <h4 id="tn_1_problem">Problem</h4>
+
+    <div class="note-95">
+
+        <p>We want to retrieve those <b>Member Countries</b>
+            which have the <b>TOP-5 Purchasing Power Standard</b>. </p>
+        <p>To be able to get the required results,
+            we make use of the pseudocolumn <b>ROWNUM</b>. </p>
+    </div>
+    <p></p>
+
+    <h4 id="tn_1_rownum">What is ROWNUM?</h4>
+    <div class="note-95">
+        <p>For each row returned by a query,
+            the <b>ROWNUM </b>pseudocolumn
+            returns <b>"a number indicating the ORDER"</b>
+            in which the row is selected from a table or
+            from a set of joined rows. </p>
+        <p>The <b>First Row </b> selected has a <b>ROWNUM of 1 </b>,
+            the <b>Second Row </b> selected has a
+            <b>ROWNUM of 2</b>, and so on.
+        </p>
+        <p><b>ROWNUM</b> can be used to
+            <span class="note-bold-red">LIMIT the number of rows </span>
+            returned by a query, as we will do in our example.
+        </p>
+        <p> </p>
+
+    </div>
+    <p></p>
+    <p></p>
+    <h4 id="tn_1_s1">Step 1</h4>
+    <div class="note-97">
+
+        <p>The Initial Step is, to
+            <b>Order the Countries</b> in
+            <span class="note-bold-red">
+                Descending Order of their
+                Purchasing Power Standard</span>.
+        </p>
+        <p>The column <b>GDP_PPS</b> holds the Purchasing Power Standard.</p>
+        <p>Here is our <b>Step 1 Query</b>: </p>
+
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT COUNTRY_NAME,
+GDP_PPS
+FROM	COUNTRIES
+WHERE	STATUS='M'
+ORDER BY GDP_PPS DESC;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+        <p>The <b>Query of Step 1</b> will be used as the
+            <b>INNER Query in the FROM Clause</b> 
+            of the <b>MAIN Query</b>  in <b>Step 2</b>.
+        </p>
+        <p>As we know from the previous section,
+            <b>Result Set of the INNER Query in the FROM Clause </b>
+            is treated like a
+            <span class="note-bold-red">"temporary table"</span>.
+        </p>
+        <p>The Result Set of the <b>INNER Query</b> 
+   is seen below. </p>
+
+        <p>The rows will be selected <b>EXACTLY </b> in
+            the order seen below from the
+            <span class="note-bold-red">INNER Query "temporary table"</span>.
+        </p>
+        <p> </p>
+        <img src="../images/c8/tn_rownum_01.jpg" style="max-width:100% ;" height="auto" alt="tn_rownum_01.jpg">
+
+    </div>
+    <p></p>
+    <h4 id="tn_1_s2">Step 2</h4>
+    <div class="note-97">
+
+        <p>The <b>Step 2 Query (MAIN Query) </b> seen below, uses the
+            <b>Query of Step 1</b> as an
+            <b>INNER Query in the FROM Clause (INLINE VIEW)</b>.
+        </p>
+    </div>
+    <p></p>
+    <div class="note-charcoal-a30-large">
+
+        <pre>
+SELECT	ROWNUM "Rank",
+COUNTRY_NAME "Top Five",
+GDP_PPS "PPS"
+FROM	(SELECT COUNTRY_NAME,
+        GDP_PPS
+        FROM	COUNTRIES
+        WHERE	STATUS='M'
+        ORDER BY GDP_PPS DESC)
+WHERE	ROWNUM <=5;
+</pre>
+
+    </div>
+    <p></p>
+
+    <div class="note-97">
+
+        <p>Our <span class="note-bold-red">Answer</span>
+            to the <span class="note-bold-red">Problem</span>
+            is seen below. </p>
+        <p>We retrieved those <b>Member Countries</b>
+            which have the <b>TOP-5 Purchasing Power Standard</b>. </p>
+        <img src="../images/c8/tn_rownum_02.jpg" style="max-width:100% ;" height="auto" alt="tn_rownum_02.jpg">
+
+
+        <p>There is an <b>ORDER BY </b> Clause in the
+            <b>INNER Query</b>:
+        </p>
+
+        <div class="note-white-larger">
+            ORDER BY GDP_PPS DESC
+        </div>
+
+        <p>We placed the <b>WHERE Condition with ROWNUM </b>
+            in the <b>MAIN Query</b>:</p>
+        <div class="note-white-larger">
+            WHERE ROWNUM <=5 </div>
+
+                <p>This condition
+                    <span class="note-bold-red"> LIMITED </span>
+                    the number of rows to 5.
+                </p>
+
+                <p>We forced the
+                    <b>WHERE Condition with ROWNUM </b>
+                    to be applied
+                    <span class="note-bold-red">AFTER </span>
+                    the rows are <b>ORDERED in the INNER Query</b>.
+                </p>
+
+                <p>As a result,
+                    the query returned the
+                    <span class="note-bold-red">FIRST FIVE Countries </span>
+                    <b></b>
+                    with the <b>HIGHEST GDP_PPS</b>,
+                    in <b>DESCENDING order of GDP_PPS</b>.
+                </p>
+
+
+        </div>
+        <p></p>
+
+        <div class="note-117">
+
+            <p>This type of query is referred to as a
+                <span class="note-bold-red">TOP-N Query</span>.
+            </p>
+            <p>In this section, we had an example of
+                a <b>TOP-N Query</b> with the
+                <span class="note-bold-red">Pseudocolumn ROWNUM</span>.
+            </p>
+        </div>
+        <p></p>
+
+        <h3 id="tn_2">TOP-N Query Using the Analytic Function ROW_NUMBER</h3>
+        <ul>
+            <li><a href="#tn_2_problem">Problem</a></li>
+            <li><a href="#tn_2_row_number">What is ROW_NUMBER?</a></li>
+            <li><a href="#tn_2_inner_q">The INNER QUERY with ROW_NUMBER</a></li>
+            <li><a href="#tn_2_partition_by">ROW_NUMBER() OVER (PARTITION BY .. ORDER BY ..)</a></li>
+            <li><a href="#tn_2_outer_query">The OUTER QUERY</a></li>
+        </ul>
+        <h4 id="tn_2_problem">Problem</h4>
+        <div class="note-95">
+
+            <p>We want to retrieve those Countries
+                which have the
+                <span class="note-bold-red">TOP-3 Purchasing Power Standard</span>
+                within their
+                <span class="note-bold-red">Status Group</span>.
+            </p>
+            <p>In our report, we want to display: </p>
+            <ul>
+                <li>the <b>Status</b>
+                    of each Country </li>
+                <li>the
+                    <b>Rank of GDP_PPS</b>
+                    <span class="note-bold-red">WITHIN</span>
+                    the <b>Status Group</b>
+                </li>
+            </ul>
+            <p> </p>
+
+        </div>
+        <p></p>
+
+
+        <div class="note-97">
+
+            <p>The Report Output we want to obtain is seen below. </p>
+            <img src="../images/c8/row_number_02.jpg" style="max-width:100% ;" height="auto" alt="row_number_02.jpg">
+            <p>To be able to get the required results,
+                we make use of the
+                <span class="note-bold-red"> Analytic Function ROW_NUMBER</span>.
+            </p>
+        </div>
+        <p></p>
+        <h4 id="tn_2_row_number">What is ROW_NUMBER? </h4>
+
+        <b></b>
+        <div class="note-95">
+            <ul>
+                <li> <b>ROW_NUMBER</b> is <span class="note-bold-red">
+                        an Analytic Function</span>.</li>
+                <li>It assigns a <b>Unique Number </b> to each row
+                    it is Applied To, in the
+                    <span class="note-bold-red">Ordered Sequence of Rows </span>
+                    specified in the <b>ORDER BY </b> Clause,
+                    <span class="note-bold-red">BEGINNING with 1</span>.
+
+                </li>
+                <li>By using the <b>ROW_NUMBER</b> in an <b>INNER QUERY</b>,
+                    you can find the precise 
+                    <span class="note-bold-red">
+                        Subset of Rows</span>.
+                </li>
+                <li>For consistent results, the query must ensure
+                    a deterministic sort order.</li>
+
+            </ul>
+        
+
+        </div>
+        <p></p>
+        <h4 id="tn_2_inner_q">The INNER QUERY with ROW_NUMBER </h4>
+        
+        <div class="note-95">
+            <p>Here is our <b>INNER QUERY</b>: </p>
+        </div>
+        
+        <p></p>
+        <div class="note-charcoal-a30-large">
+
+            <pre>
+SELECT STATUS,
+COUNTRY_NAME,	
+GDP_PPS,
+ROW_NUMBER() OVER 
+    (PARTITION BY STATUS ORDER BY GDP_PPS DESC) STATUS_RANK
+FROM COUNTRIES
+WHERE GDP_PPS IS NOT NULL
+</pre>
+
+        </div>
+        <p></p>
+        <div class="note-97">
+
+            <p>Below is the Result Set of the INNER Query. </p>
+            <img src="../images/c8/row_number_03.jpg" style="max-width:100% ;" height="auto" alt="row_number_03.jpg">
+            <p>The complete Result Set is seen below. </p>
+            <img src="../images/c8/row_number_04.jpg" style="max-width:100% ;" height="auto" alt="row_number_04.jpg">
+
+        </div>
+        <p></p>
+        <h4 id="tn_2_partition_by">ROW_NUMBER() OVER (PARTITION BY .. ORDER BY ..)</h4>
+        <p></p>
+        <div class="note-95">
+
+            <p>We have the following expression in the
+                <b>INNER QUERY</b>.
+            </p>
+
+        </div>
+        <p></p>
+        <p></p>
+        <div class="note-charcoal-a30-large">
+
+            <pre>
+ROW_NUMBER() OVER 
+    (PARTITION BY STATUS ORDER BY GDP_PPS DESC) STATUS_RANK
+</pre>
+
+        </div>
+        <p></p>
+
+        <div class="note-95">
+            <p></p>
+            <div class="note-white-larger">
+                ROW_NUMBER() OVER
+                (PARTITION BY STATUS ORDER BY GDP_PPS DESC) STATUS_RANK
+            </div>
+            <p>Let's analyze this expression
+                by each Clause. </p>
+       
+            <p></p>
+        </div>
+        <p></p>
+
+<div class="note-97">
+    <div class="note-white-larger">
+        PARTITION BY STATUS 
+    </div>
+    <p></p>
+    <p>This Clause
+        <span class="note-bold-red">DIVIDES</span>  the
+         <b>COUNTRIES</b>  table into 
+        <span class="note-bold-red"> SUBSETS</span>  
+           by the values in the column <b>STATUS</b>.
+    </p>
+ <p> The values in the column <b>STATUS</b>  are 
+    <span class="note-bold-red"> 'C', 'M', </span>      and 
+    <span class="note-bold-red"> 'O'</span>.</p>
+    <p>Hence we now have
+        <span class="note-bold-red">three SUBSETS</span> 
+of the    <b>COUNTRIES</b> table. 
+    </p>
+
+
+</div>
+<p></p>
+
+<div class="note-97">
+    <p></p>
+    <div class="note-white-larger">
+        ORDER BY GDP_PPS DESC
+     </div>
+     <p></p>
+    <p> This Clause <b>ORDERS</b> the <b>COUNTRIES</b>  in
+        <span class="note-bold-red">DESCENDING ORDER of their GDP_PPS </span>.
+    </p>
+
+    <p></p>
+</div>
+<p></p>
+<div class="note-97">
+    <p>Hence, these Two Clauses together;
+    </p>
+    <div class="note-white-larger">
+        (PARTITION BY STATUS ORDER BY GDP_PPS DESC)
+    </div>
+
+<ul>
+    <li>initially <span class="note-bold-red">DIVIDE</span> 
+        the table <b>COUNTRIES</b> into 
+        <span class="note-bold-red">SUBSETS of STATUS Groups
+</span></li>
+    <li>then <span class="note-bold-red">ORDER the rows</span> 
+        <b>in Each STATUS Group </b> 
+        in 
+        <span class="note-bold-red">DESCENDING ORDER of their GDP_PPS </span></li>
+</ul>
+
+
+    <p> </p>
+
+</div>
+<p></p>
+
+<div class="note-97">
+
+    <p> </p>
+    <div class="note-white-larger">
+        ROW_NUMBER() OVER
+    </div>
+    <p>This Clause 
+      <span class="note-bold-red">ASSIGNS</span>   
+      each <b>COUNTRY</b>
+        a <span class="note-bold-red"> RANK </span> 
+        <span class="note-bold-red"> WITHIN EACH SUBSET </span>,
+        which are already ordered in descending GDP_PPS.
+    </p> 
+</div>
+<p></p>
+
+<div class="note-97">
+
+    <p> </p>
+    <div class="note-white-larger">
+        ROW_NUMBER() OVER
+        (PARTITION BY STATUS ORDER BY GDP_PPS DESC)
+    </div>
+    <p>This whole expression above, created a <b>New Column</b>.
+</p>
+        <p>We now give this new column an <b>ALIAS</b>:</p>
+    <div class="note-white-larger">
+        STATUS_RANK
+    </div>
+
+  
+
+    <p>This new column 
+    <b>DOES NOT EXIST</b> in the Countries table.</p>
+
+    <p>It ONLY EXISTS during the lifetime of the query.</p>
+</div>
+<p></p>
+
+<div class="note-95">
+    <p>Once again, 
+        we display our <b>INNER QUERY</b> and its Result Set below. </p>
+</div>
+
+<p></p>
+<div class="note-charcoal-a30-large">
+
+    <pre>
+SELECT STATUS,
+COUNTRY_NAME,	
+GDP_PPS,
+ROW_NUMBER() OVER 
+(PARTITION BY STATUS ORDER BY GDP_PPS DESC) STATUS_RANK
+FROM COUNTRIES
+WHERE GDP_PPS IS NOT NULL
+</pre>
+
+</div>
+<p></p>
+<div class="note-97">
+
+    <img src="../images/c8/row_number_03.jpg" style="max-width:100% ;" height="auto" alt="row_number_03.jpg">
+    
+    <img src="../images/c8/row_number_04.jpg" style="max-width:100% ;" height="auto" alt="row_number_04.jpg">
+
+</div>
+<p></p>
+
+<p></p>
+<div class="note-117">
+
+    <p>Our <b>INNER QUERY </b> Result Set is ready
+        to be used in the <b>OUTER QUERY</b>. </p>
+
+</div>
+<p></p>
+
+        
+
+<!-- -->
+
+
+        <p></p>
+        <h4 id="tn_2_outer_query">The OUTER QUERY</h4>
+        <p></p>
+
+        <div class="note-95">
+
+            <p>Using the query below,
+                we find the Countries with the
+                <b>three highest GDP_PPS </b>
+                <span class="note-bold-red">WITHIN </span>
+                <b> each Status Group</b>.
+            </p>
+            <p> </p>
+
+            <p>We placed the <b>WHERE Condition with the New Column </b>
+                in the <b>OUTER Query</b>:</p>
+            <div class="note-white-larger">
+                WHERE STATUS_RANK <=3 </div>
+
+                    <p>This condition which uses the
+                        <span class="note-bold-red">
+                            New Column STATUS_RANK</span>,
+                            <b> LIMITS </b>
+                        the number of rows within 
+                        <span class="note-bold-red"> Each STATUS Group </span> to 3 .
+                    </p>
+
+            </div>
+            <p></p>
+
+            <p></p>
+            <div class="note-charcoal-a30-large">
+
+                <pre>
+SELECT	 STATUS_RANK,
+STATUS,
+COUNTRY_NAME,
+GDP_PPS
+FROM (SELECT STATUS,
+    COUNTRY_NAME,	
+    GDP_PPS,
+    ROW_NUMBER() OVER 
+        (PARTITION BY STATUS ORDER BY GDP_PPS DESC) STATUS_RANK
+    FROM	COUNTRIES
+    WHERE 	GDP_PPS IS NOT NULL)
+WHERE STATUS_RANK  <=3
+ORDER BY STATUS, GDP_PPS DESC, COUNTRY_NAME;
+</pre>
+
+            </div>
+            <p></p>
+
+            <div class="note-97">
+
+
+                <p>Below is the Result Set of the OUTER Query. </p>
+                <img src="../images/c8/row_number_01.jpg" style="max-width:100% ;" height="auto" alt="row_number_01.jpg">
+
+
+
+            </div>
+            <p></p>
+            <div class="note-117">
+
+                <p> </p>
+                <p>In this section, we had an example of
+                    a <b>TOP-N Query</b> with the
+                    <span class="note-bold-red">
+                        Analytic Function ROW_NUMBER</span>.
+            </div>
+            <p></p>
+
+            <h2 id="cor">CORRELATED Subqueries</h2>
+            <ul>
+                <li><a href="#cor_1">What is a CORRELATED Subquery?</a></li>
+                <li><a href="#cor_ex_1">Example of a CORRELATED Subquery</a></li>
+
+                <li><a href="#cor_2">How Does a CORRELATED Subquery Work?</a></li>
+                <li><a href="#cor_3">EXISTS Operator in CORRELATED Subqueries</a></li>
+                <ul>
+                    <li><a href="#cor_3_1">(EXISTS) INNER Query Returns
+                            AT LEAST ONE ROW</a></li>
+                    <li><a href="#cor_3_2">(EXISTS) INNER Query Returns
+                            NO ROWS</a></li>
+                    <li><a href="#cor_3_3">Example ON EXISTS </a></li>
+
+                </ul>
+
+                <li><a href="#cor_4">NOT EXISTS Operator in CORRELATED Subqueries</a></li>
+                <ul>
+                    <li><a href="#cor_4_1">(NOT EXISTS) INNER Query Returns
+                            AT LEAST ONE ROW</a></li>
+                    <li><a href="#cor_4_2">(NOT EXISTS) INNER Query Returns
+                            NO ROWS</a></li>
+                    <li><a href="#cor_4_3">Example ON NOT EXISTS </a></li>
+
+                </ul>
+            </ul>
+
+
+            <h3 id="cor_1">What is a CORRELATED Subquery?</h3>
+
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+
+            <div class="note-oceangreen-a05">
+
+                <p>A <span class="note-bold-navy">Correlated Subquery</span> is
+                    performed when the
+
+                    <b>Subquery REFERENCES </b> a column in
+                    a table in the <span class="note-bold-red">
+                        MAIN Query (OUTER Query or the PARENT Statement)</span>.
+                </p>
+                <p>The <span class="note-bold-red">
+                        PARENT Statement</span> can be a
+                    <b>SELECT, INSERT, UPDATE or a DELETE Statement</b>
+                    in which the
+                    <span class="note-bold-navy">Subquery is nested</span>.
+                </p>
+                <p> </p>
+
+            </div>
+            <p></p>
+
+
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+
+
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+
+            <div class="note-97">
+                <p>In <span class="note-bold-red"> any Subquery</span>,
+                    <span class="note-bold-navy">OTHER THAN a Correlated Subquery</span>,
+                    the <span class="note-bold-red">
+                        INNER Query (the SUBQUERY);
+                    </span>
+                </p>
+
+                <p></p>
+
+                <ul>
+                    <li> <b>Runs FIRST</b> and</li>
+                    <li> <b>EXECUTES ONCE</b> and</li>
+                    <li> <b>RETURNS RESULTS ONCE </b> to be used by the
+                        <span class="note-bold-red">
+                            MAIN Query (OUTER Query/PARENT Query)
+                    </li>
+                </ul>
+
+
+            </div>
+
+            <p></p>
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+
+            <div class="note-97">
+                <p>A <span class="note-bold-navy">Correlated Subquery</span>
+                    however,
+                    <b></b>
+                    <span class="note-bold-red">
+                        EXECUTES ONCE for EACH CANDIDATE ROW
+                    </span> considered by
+                    <b>the MAIN Query(OUTER Query/PARENT Query).</b>
+                </p>
+                <p>In other words,
+                    the
+                    <span class="note-bold-navy">
+                        Correlated Subquery (Inner Query ) </span> is
+                    <span class="note-bold-red">DRIVEN BY</span>
+                    <b>the MAIN Query(OUTER Query/PARENT Query).</b>
+                </p>
+                <p><b>MAIN Query(OUTER Query/PARENT Query)</b>
+                    <span class="note-bold-red">Retrieves a Candidate Row FIRST.</span>
+                </p>
+                <p> Let's have an Example <span class="note-bold-navy">
+                        of a Correlated Subquery.
+                    </span></p>
+
+            </div>
+            <p></p>
+            <h3 id="cor_ex_1">Example of a CORRELATED Subquery</h3>
+            <div class="note-oceangreen-a05">
+
+                </span></p>
+                <p>Find those <b>Countries </b> which have
+                    <b>Purchasing Power Standard</b> values
+                    <b>MORE THAN</b> the
+                    <span class="note-bold-navy">
+                        Average Purchasing Power Standard of
+                        their Status Group.
+                    </span>
+                </p>
+                <p> In this case, the
+                    <span class="note-bold-navy">
+                        Correlated Subquery
+                    </span> specifically
+                    computes the <span class="note-bold-navy">
+                        Average Purchasing Power Standard of
+                        EACH Status Group (STATUS column).
+                    </span>
+                </p>
+                <p>However, <span class="note-bold-navy">
+                        the Value of the Status Group in the Correlated Subquery
+                    </span>
+                    <b>DEPENDS ON </b>
+                    the
+                    <span class="note-bold-red">Value of the Status Column
+                        in EACH ROW processed by
+                        the MAIN Query(OUTER Query/PARENT Query)</span>.
+                </p>
+
+
+                <p></p>
+            </div>
+            <p></p>
+
+            <div class="note-97">
+
+                <p> </p>
+
+                <p>The following SELECT Statement returns
+                    <b>Countries</b> which have <b>Purchasing Power Standard</b>
+                    values MORE THAN their
+                    <b>Status Group Average</b>.
+                </p>
+            </div>
+            <p></p>
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+            <div class="note-charcoal-a30-large">
+
+                <pre>
+select	outer_c.country_id,
+outer_c.country_name,
+outer_c.status,
+outer_c.gdp_pps
+from countries outer_c
+where outer_c.gdp_pps > 
+    (select avg(inner_c.gdp_pps)
+    from countries inner_c
+    where inner_c.status = outer_c.status)
+order by outer_c.status, 	
+outer_c.gdp_pps desc;
+</pre>
+
+            </div>
+            <p></p>
+
+            <div class="note-97">
+
+                <p>Here is the Result Set of the Query. </p>
+                <img src="../images/c8/corr_01.jpg" style="max-width:100% ;" height="auto" alt="corr_01.jpg">
+
+            </div>
+            <p></p>
+
+            <h3 id="cor_2">How Does a CORRELATED Subquery Work?</h3>
+
+            <div class="note-95">
+
+                <p> </p>
+                <ol>
+                    <li>A 
+ <span class="note-bold-red">Candidate Row</span>                       
+is retrieved from the Main Query.
+                    </li>
+<li>The Correlated Subquery(INNER Query) is executed using
+    <span class="note-bold-red">a Candidate Row value</span>     
+ from the Main Query.
+                    </li>
+<li>The value retrieved by the Correlated Subquery is used
+to Qualify or Disqualify <span class="note-bold-red">the Candidate Row</span>.     
+                    </li>
+                    <li>Go to Step 1 and process until all rows are read.
+                    </li>
+                </ol>
+            </div>
+            <p></p>
+
+
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+
+
+            <h3 id="cor_3">EXISTS Operator in CORRELATED Subqueries</h3>
+
+
+            <div class="note-97">
+
+                <p><b>EXISTS Operator</b> is used to test
+                    whether a value retrieved by
+                    the <b>MAIN Query </b> exists in
+                    the Result Set of the <b>INNER Query
+                        (Correlated Subquery)</b>. </p>
+                <p> </p>
+
+            </div>
+            <p></p>
+
+            <ul>
+                <li><a href="#cor_3_1">(EXISTS) INNER Query Returns
+                        AT LEAST ONE ROW</a></li>
+                <li><a href="#cor_3_2">(EXISTS) INNER Query Returns
+                        NO ROWS</a></li>
+                <li><a href="#cor_3_3">Example ON EXISTS </a></li>
+
+            </ul>
+
+
+
+
+            <h4 id="cor_3_1">(EXISTS) INNER Query Returns
+                AT LEAST ONE ROW
+            </h4>
+            <p></p>
+            <p></p>
+            <div class="note-97">
+
+                <p>If the <b>INNER Query
+                        (Correlated Subquery) </b> Returns
+                    <b>AT LEAST ONE ROW</b>:
+                </p>
+                <ul>
+                    <li>Then, <b>EXISTS Operator </b> returns
+                        <span class="note-bold-navy">TRUE</span>.
+                    </li>
+                    <li>Therefore, the <b>MAIN Query </b> row is
+                        <span class="note-bold-navy">"selected"</span>.
+                    </li>
+                </ul>
+            </div>
+            <p></p>
+
+
+            <h4 id="cor_3_2">(EXISTS) INNER Query Returns
+                NO ROWS
+            </h4>
+            <p></p>
+            <p></p>
+            <div class="note-97">
+
+                <p>If the <b>INNER Query
+                        (Correlated Subquery) </b> Returns
+                    <span class="note-bold-red">NO ROWS</span>:
+                </p>
+                <ul>
+                    <li>Then, <b>EXISTS Operator</b> returns
+                        <span class="note-bold-red">FALSE</span>.
+                    </li>
+                    <li>Therefore, the <b>MAIN Query </b> row
+                        is
+                        <span class="note-bold-red">"NOT selected"</span>.
+                    </li>
+                </ul>
+            </div>
+            <p></p>
+
+
+
+            <h4 id="cor_3_3">Example ON EXISTS </h4>
+            <p></p>
+
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+            <div class="note-97">
+
+
+                <p> <span class="note-bold-red">Requirement:</span></p>
+                <p>Display details of those Political Groups
+                    that have at least one MEP (Member of the Parliament) belonging to them. </p>
+
+                <p> <span class="note-bold-red">Answer:</span></p>
+                <p>To answer this requirement,
+                    we write the Query below.
+                </p>
+            </div>
+            <p></p>
+
+
+            <div class="note-charcoal-a30-large">
+
+                <pre>
+select outer_q.pg_id,	
+outer_q.pg_code,
+outer_q.pg_name
+from political_groups outer_q
+where EXISTS (select 1
+            from meps inner_q
+            where inner_q.pg_id = outer_q.pg_id);
+</pre>
+
+            </div>
+            <p></p>
+
+            <div class="note-97">
+
+                <p>Here is the Result Set of the Query. </p>
+                <img src="../images/c8/exists_01.jpg" style="max-width:100% ;" height="auto" alt="exists_01.jpg">
+
+            </div>
+            <p></p>
+
+
+
+            <b></b>
+            <span class="note-bold-navy"></span>
+            <span class="note-bold-red"></span>
+
+
+            <div class="note-97">
+
+                <p></p>
+                <p> <b>EXISTS Operator</b> ensures that
+                    the search in the
+                    <span class="note-bold-red">
+                        INNER QUERY (Correlated Subquery)
+                    </span>
+                    does <b>NOT CONTINUE </b>
+                    when <b>AT LEAST ONE MATCH</b> is found for the
+                    Political Group.
+                </p>
+
+            </div>
+            <p></p>
+            <div class="note-97">
+                <p> </p>
+                <p> </p>
+                <ul>
+                    <li>Please note that the
+                        <span class="note-bold-red">SELECT of the INNER QUERY</span> does
+                        <b>NOT NEED to return a SPECIFIC VALUE</b>.
+                    </li>
+                    <li>Therefore,
+                        <span class="note-bold-red">a CONSTANT CAN BE SELECTED</span>.
+                    </li>
+                    <li>Using a <span class="note-bold-red"> CONSTANT </span>
+                        like <b>'YES' </b> or <b>1</b>
+                        in the SELECT list
+                        is <span class="note-bold-red">
+                            May Retrieve the Rows FASTER
+                        </span> than to select a column.</li>
+
+                </ul>
+
+            </div>
+            <p></p>
+
+
+
+
+
+
+            <div class="note-97">
+
+                <p>We can replace the <b>EXISTS Operator</b> with the
+                    <b>IN Operator</b>, and
+                    use the <b>column pg_id </b> instead of a CONSTANT in the
+                    INNER SELECT,
+                    and obtain
+                    the same result set, as seen below.
+                </p>
+            </div>
+            <p></p>
+
+
+            <div class="note-charcoal-a30-large">
+
+                <pre>
+select outer_q.pg_id,	
+outer_q.pg_code,
+outer_q.pg_name
+from political_groups outer_q
+where outer_q.pg_id IN 
+        (select	 distinct inner_q.pg_id
+        from meps inner_q
+        where inner_q.pg_id is not null);
+</pre>
+
+            </div>
+            <p></p>
+
+            <div class="note-97">
+                <b></b>
+                <span class="note-bold-navy"></span>
+                <span class="note-bold-red"></span>
+                <p>Here is the output of the query.</p>
+                <img src="../images/c8/exists_02.jpg" style="max-width:100% ;" height="auto" alt="exists_02.jpg">
+
+            </div>
+            <p></p>
+
+            <h3 id="cor_4">NOT EXISTS Operator in CORRELATED Subqueries</h3>
+
+            <div class="note-oceangreen-a05">
+                <p><b>NOT EXISTS Operator</b> is used to test
+                    whether a value retrieved by
+                    the <b>MAIN Query </b>
+                    <span class="note-bold-red">DOES NOT EXIST</span>
+                    in
+                    the Result Set of the <b>INNER Query
+                        (Correlated Subquery)</b>.
+                </p>
+                <p> </p>
+
+            </div>
+            <p></p>
+
+
+            <ul>
+                <li><a href="#cor_4_1">(NOT EXISTS) INNER Query Returns
+                        AT LEAST ONE ROW</a></li>
+                <li><a href="#cor_4_2">(NOT EXISTS) INNER Query Returns
+                        NO ROWS</a></li>
+                <li><a href="#cor_4_3">Example ON NOT EXISTS </a></li>
+
+            </ul>
+
+            <h4 id="cor_4_1">(NOT EXISTS) INNER Query Returns
+                AT LEAST ONE ROW
+            </h4>
+
+
+            <p></p>
+            <p></p>
+            <div class="note-oceangreen-a05">
+
+                <p>If the <b>INNER Query
+                        (Correlated Subquery) </b> Returns
+                    <b>AT LEAST ONE ROW</b>:
+                </p>
+                <ul>
+                    <li>Then, <b>NOT EXISTS Operator </b> returns
+                        <span class="note-bold-red">FALSE</span>.
+                    </li>
+                    <li>Therefore, the <b>MAIN Query </b> row is
+                        <span class="note-bold-red">"NOT selected"</span>.
+                    </li>
+                </ul>
+                <p> </p>
+                <p> </p>
+
+
+            </div>
+            <p></p>
+
+            <h4 id="cor_4_2">(NOT EXISTS) INNER Query Returns
+                NO ROWS
+            </h4>
+            <p></p>
+            <p></p>
+            <div class="note-oceangreen-a05">
+
+                <p>If the <b>INNER Query
+                        (Correlated Subquery) </b> Returns
+                    <span class="note-bold-navy">NO ROWS</span>:
+                </p>
+                <ul>
+                    <li>Then, <b>NOT EXISTS Operator</b> returns
+                        <span class="note-bold-navy">TRUE</span>.
+                    </li>
+                    <li>Therefore, the <b>MAIN Query </b> row
+                        is
+                        <span class="note-bold-navy">"selected"</span>.
+                    </li>
+                </ul>
+            </div>
+            <p></p>
+
+
+
+            <h4 id="cor_4_3">Example ON NOT EXISTS </h4>
+            <p></p>
+
+            <div class="note-oceangreen-a05">
+
+                <p> </p>
+
+                <p> <span class="note-bold-red">Requirement:</span></p>
+                <p>Display details of those Political Groups
+                    that have currently NO MEPs (Members of the Parliament) belonging to them. </p>
+
+                <p> <span class="note-bold-red">Answer:</span></p>
+                <p>To answer this requirement,
+                    we write the Query below.
+                </p>
+
+            </div>
+            <p></p>
+
+            <div class="note-charcoal-a30-large">
+
+                <pre>
+select	outer_q.pg_id,	
+outer_q.pg_code,
+outer_q.pg_name
+from political_groups outer_q
+where	NOT EXISTS (select 1
+            from meps inner_q
+            where inner_q.pg_id = outer_q.pg_id);
+</pre>
+
+            </div>
+            <p></p>
+
+            <div class="note-oceangreen-a05">
+                <p>Here is the Result Set of the Query(NOT EXISTS). </p>
+                <p> </p>
+                <img src="../images/c8/not_exists_01.jpg" style="max-width:100% ;" height="auto" alt="not_exists_01.jpg">
+
+            </div>
+            <p></p>
+
+            <div class="note-oceangreen-a05">
+
+                <p>We can replace the <b>NOT EXISTS Operator</b> with the
+                    <b>NOT IN Operator</b>, and
+                    use the <b>column pg_id </b> instead of a CONSTANT in the
+                    INNER SELECT,
+                    and obtain
+                    the same result set, as seen below.
+                </p>
+            </div>
+            <p></p>
+            <p></p>
+            <div class="note-charcoal-a30-large">
+
+                <pre>
+select outer_q.pg_id,	
+outer_q.pg_code,
+outer_q.pg_name
+from political_groups outer_q
+where outer_q.pg_id NOT IN 
+        (select	 distinct inner_q.pg_id
+        from meps inner_q
+        where inner_q.pg_id is not null);
+</pre>
+
+            </div>
+            <p></p>
+
+            <div class="note-oceangreen-a05">
+                <p>Here is the Result Set of the Query (NOT IN). </p>
+                <p> </p>
+                <img src="../images/c8/not_exists_02.jpg" style="max-width:100% ;" height="auto" alt="not_exists_02.jpg">
+
+            </div>
+            <p></p>
+
+            <!--  -->
+            <p></p>
+
+            <div class="note-97">
+                <p>This resumes the Chapter on Subqueries. </p>
+                <img src="../images/c8/garden-9984.jpg" style="max-width:100% ;" height="auto" alt="Breath of Fresh Air">
+
+                <p> </p>
+
+            </div>
+            <p></p>
+
+            <!--  -->
+            <!-- my comments -->
+            <h2 id="references">References</h2>
+
+
+
+            <div class="note-charcoal-a30">
+
+                <ul>
+
+                    <li>Oracle&#174; Database, Database Concepts, 21c, F31733-04, August 2021</li>
+                    <li>Oracle&#174; Database, 2 Day Developer's Guide, 21c, F32609-01, December 2020 </li>
+                    <li>Oracle&#174; Database, SQL Language Reference, 23c F47038-03, June 2023</li>
+                    <li>Oracle&#174; Database, SQL Language Reference, 21c F31301-07, March 2022</li>
+                    <li>Oracle&#174; Database, Data Warehousing Guide, 23c F46734-02, May 2023</li>
+                    <li>Oracle&#174; Database, Database Reference, 21c, F31274-15, August 2022</li>
+                    <li>Oracle&#174; Database, Object-Relational Developer's Guide, 21c, F32263-01, December 2020</li>
+                    <li>C.J. Date, An Introduction to Database Systems 7th Edition, Addison-Wesley ISBN 0-201-38590-2
+                    </li>
+                    <li>Richard Barker, Case*Method, Entity Relationship Modelling, Addison-Wesley ISBN 0-201-41696-4
+                    </li>
+                    <li>https://docs.oracle.com/en/database/oracle/oracle-database/23/data-warehousing.html</li>
+                </ul>
+            </div>
+
+            <div class="note-117">
+
+
+
+                <ul>
+                    <li>ISBN 92-79-03653-X , How the European Union works: Booklet by EU Publications Office
+                    </li>
+                    <li>ISBN 978-92-824-2203-8, Information handbook of the Council of the European Union, DG Press,
+                        General
+                        Secretariat of the Council</li>
+
+                    <li>European Union
+                        <p><a href="https://europa.eu/european-union/index_en" target="_blank">
+                                https://europa.eu/european-union/index_en</a> </p>
+
+                    </li>
+
+                    <li>European Council
+                        <p><a href="https://www.consilium.europa.eu/en/" target="_blank">
+                                https://www.consilium.europa.eu/en/</a>
+                        </p>
+                    </li>
+                    <li>European Parliament
+                        <p> <a href="https://www.europarl.europa.eu/portal/en" target="_blank">
+                                https://www.europarl.europa.eu/portal/en</a> </p>
+
+                    </li>
+                    <li>The Official Directory of the European Union (Who is Who)
+                        <p><a href="  https://op.europa.eu/en/web/who-is-who" target="_blank">
+                                https://op.europa.eu/en/web/who-is-who </a> </p>
+                    </li>
+                </ul>
+            </div>
+            <p></p>
+            <img src="../images/c8/deu.png" style="max-width:100% ;" height="auto" alt="just me">
+            <p></p>
+</body>
+
+</html>
